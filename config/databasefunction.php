@@ -3,15 +3,13 @@ require_once "database.php";
 require_once "../api/utils.php";
 
 function loginUser($email, $password) {
-    global $conn;
+    global $pdo;
 
-    $stmt = $conn->prepare("SELECT * FROM customer WHERE Email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $stmt = $pdo->prepare("SELECT * FROM customer WHERE Email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($result->num_rows === 1) {
-        $user = $result->fetch_assoc();
+    if ($user) {
         if (password_verify($password, $user['Password'])) {
             session_start();
             $_SESSION['customer_id'] = $user['CustomerID'];
@@ -25,45 +23,41 @@ function loginUser($email, $password) {
     }
 }
 
-function registerUser($name, $email, $password, $phone, $address, $dob) {
-    global $conn;
+function registerUser($name, $email, $password, $phone, $address, $credit_card) {
+    global $pdo;
 
-    $stmt = $conn->prepare("SELECT CustomerID FROM customer WHERE Email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $stmt->store_result();
+    try {
+        $stmt = $pdo->prepare("SELECT CustomerID FROM customer WHERE Email = ?");
+        $stmt->execute([$email]);
 
-    if ($stmt->num_rows > 0) {
-        return ["success" => false, "message" => "Email already exists"];
-    }
+        if ($stmt->rowCount() > 0) {
+            return ["success" => false, "message" => "Email already exists"];
+        }
 
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    $stmt = $conn->prepare("
-        INSERT INTO customer (Name, Email, Password, PhoneNumber, Address, DOB)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ");
-    $stmt->bind_param("ssssss", $name, $email, $hashed_password, $phone, $address, $dob);
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $now = date('Y-m-d H:i:s');
 
-    if ($stmt->execute()) {
-        return ["success" => true, "message" => "Registration successful"];
-    } else {
-        return ["success" => false, "message" => "Registration failed"];
+        $stmt = $pdo->prepare("INSERT INTO customer (Name, Email, Password, PhoneNumber, Address, CreditCardInfo, RegistrationDate) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $result = $stmt->execute([$name, $email, $hashed_password, $phone, $address, $credit_card, $now]);
+
+        return $result
+            ? ["success" => true, "message" => "Registration successful"]
+            : ["success" => false, "message" => "Registration failed"];
+    } catch (PDOException $e) {
+        return ["success" => false, "message" => $e->getMessage()];
     }
 }
 
 function generateResetToken($email) {
-    global $conn;
+    global $pdo;
 
-    $stmt = $conn->prepare("SELECT CustomerID FROM customer WHERE Email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows === 1) {
+    $stmt = $pdo->prepare("SELECT CustomerID FROM customer WHERE Email = ?");
+    $stmt->execute([$email]);
+    
+    if ($stmt->rowCount() === 1) {
         $token = generateToken(10);
-        $update = $conn->prepare("UPDATE customer SET reset_token = ? WHERE Email = ?");
-        $update->bind_param("ss", $token, $email);
-        $update->execute();
+        $update = $pdo->prepare("UPDATE customer SET reset_token = ? WHERE Email = ?");
+        $update->execute([$token, $email]);
         return ["success" => true, "message" => "Reset token generated", "reset_token" => $token];
     } else {
         return ["success" => false, "message" => "Email not found"];
@@ -71,20 +65,18 @@ function generateResetToken($email) {
 }
 
 function generatePasswordReset($email) {
-    global $conn;
-    
-    $stmt = $conn->prepare("SELECT * FROM customer WHERE Email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    global $pdo;
 
-    if ($result->num_rows === 1) {
+    $stmt = $pdo->prepare("SELECT * FROM customer WHERE Email = ?");
+    $stmt->execute([$email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user) {
         $code = rand(100000, 999999);
         $token = generateToken(10);
 
-        $update = $conn->prepare("UPDATE customer SET reset_token = ?, verification_code = ? WHERE Email = ?");
-        $update->bind_param("sss", $token, $code, $email);
-        $update->execute();
+        $update = $pdo->prepare("UPDATE customer SET reset_token = ?, verification_code = ? WHERE Email = ?");
+        $update->execute([$token, $code, $email]);
 
         return ["success" => true, "message" => "Verification code sent", "reset_token" => $token, "verification_code" => $code];
     } else {

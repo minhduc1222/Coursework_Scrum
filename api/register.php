@@ -1,28 +1,59 @@
 <?php
-require "../config/databasefunction.php";
-require_once "utils.php";
+// Include database connection
+require_once "../config/database.php";
+require_once "../config/databasefunction.php";
 
-// Check if this is an API request (JSON data)
-$contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+// Default error and success
+$error = "";
+$success = false;
 
-// More flexible content type checking
-if (strpos($contentType, 'application/json') !== false) {
-    $data = json_decode(file_get_contents("php://input"));
-
-    if (!isset($data->name, $data->email, $data->password, $data->phone)) {
-        respond(false, "Required fields missing");
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Validate all required fields
+    $required = ['name', 'email', 'password', 'confirm_password', 'phone', 'address', 'credit_card'];
+    foreach ($required as $field) {
+        if (empty($_POST[$field])) {
+            $error = "All fields are required.";
+            include "../template/register.html.php";
+            exit;
+        }
     }
 
-    $name = $conn->real_escape_string($data->name);
-    $email = $conn->real_escape_string($data->email);
-    $password = $data->password;
-    $phone = $conn->real_escape_string($data->phone);
-    $address = $conn->real_escape_string($data->address);
-    $dob = $conn->real_escape_string($data->dob);
+    // Extract form data
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+    $credit_card = $_POST['credit_card'];
 
-    $result = registerUser($name, $email, $password, $phone, $address, $dob);
-    respond($result['success'], $result['message']);
+    // Validate password match
+    if ($password !== $confirm_password) {
+        $error = "Passwords do not match.";
+        include "../template/register.html.php";
+        exit;
+    }
+
+    // Validate password length
+    if (strlen($password) < 8) {
+        $error = "Password must be at least 8 characters.";
+        include "../template/register.html.php";
+        exit;
+    }
+
+    // Use the separated function
+    $result = registerUser($name, $email, $password, $phone, $address, $credit_card);
+
+    if ($result['success']) {
+        $success = true;
+        include "../template/login.html.php";
+        exit;
+    } else {
+        $error = $result['message'];
+        include "../template/register.html.php";
+        exit;
+    }
 } else {
-    // If it's not a JSON request, include the template
     include "../template/register.html.php";
+    exit;
 }
