@@ -14,7 +14,7 @@
             $query = "SELECT Feature FROM " . $this->table_name . " WHERE PackageID = :packageId";
             $stmt = $this->conn->prepare($query);
             $stmt->execute(['packageId' => $packageId]);
-            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+            return $stmt->FetchAll(PDO::FETCH_COLUMN);
         }
 
         // Read all package features
