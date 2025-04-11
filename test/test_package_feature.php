@@ -1,12 +1,13 @@
 <?php
-require_once '../config/db.php';
-require_once '../models/Package_feature.php';
+require_once '../config/database.php';
+require_once '../models/PackageFeature.php';
 
 $packageFeature = new PackageFeature($pdo);
 
 // === READ ALL package features ===
 echo "<h3>📦 All Package Features</h3>";
 $stmt = $packageFeature->readAll();
+
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     extract($row);
     echo "• PackageID: $PackageID - FeatureID: $FeatureID - Feature: $Feature<br>";
