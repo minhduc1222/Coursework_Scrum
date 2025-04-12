@@ -35,7 +35,7 @@ class Customer {
         
         $this->Name = $row['Name'];
         $this->Email = $row['Email'];
-        $this->Password = $row['password'];
+        $this->Password = $row['Password'];
         $this->Address = $row['Address'];
         $this->PhoneNumber = $row['PhoneNumber'];
         $this->CreditCardInfo = $row['CreditCardInfo'];
@@ -45,7 +45,7 @@ class Customer {
     // Create customer
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET Name=:name, Email=:email, password=:password, Address=:address, 
+                  SET Name=:name, Email=:email, Password=:Password, Address=:address, 
                       PhoneNumber=:phone, CreditCardInfo=:card";
         
         $stmt = $this->conn->prepare($query);
@@ -61,7 +61,7 @@ class Customer {
         $stmt->bindParam(":name", $this->Name);
         $stmt->bindParam(":email", $this->Email);
         $hashedPassword = password_hash($this->Password, PASSWORD_DEFAULT);
-        $stmt->bindParam(":password", $hashedPassword);
+        $stmt->bindParam(":Password", $hashedPassword);
         $stmt->bindParam(":address", $this->Address);
         $stmt->bindParam(":phone", $this->PhoneNumber);
         $stmt->bindParam(":card", $this->CreditCardInfo);
@@ -117,7 +117,7 @@ class Customer {
 
     // Login customer
     public function login() {
-        $query = "SELECT CustomerID, Name, password FROM " . $this->table_name . " WHERE Email = ?";
+        $query = "SELECT CustomerID, Name, Password FROM " . $this->table_name . " WHERE Email = ?";
         $stmt = $this->conn->prepare($query);
         $this->Email = htmlspecialchars(strip_tags($this->Email));
         $stmt->bindParam(1, $this->Email);
@@ -125,7 +125,7 @@ class Customer {
         
         if($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            if(password_verify($this->Password, $row['password'])) {
+            if(password_verify($this->Password, $row['Password'])) {
                 return $row;
             }
         }

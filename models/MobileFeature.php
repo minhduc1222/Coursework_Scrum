@@ -1,7 +1,7 @@
 <?php
 class MobileFeature {
     private $conn;
-    private $table_name = "mobilefeatures";
+    private $table_name = "mobile_features";
 
     public $FeatureID;
     public $PackageID;

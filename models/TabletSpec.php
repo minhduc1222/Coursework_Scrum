@@ -1,7 +1,7 @@
 <?php
 class TabletSpec {
     private $conn;
-    private $table_name = "tabletspecs";
+    private $table_name = "tablet_specs";
 
     public $SpecID;
     public $PackageID;

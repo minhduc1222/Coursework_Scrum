@@ -2,7 +2,7 @@
 // Special Offer Model
 class SpecialOffer {
     private $conn;
-    private $table_name = "specialoffer";
+    private $table_name = "special_offer";
 
     public $SpecialOfferID;
     public $Description;

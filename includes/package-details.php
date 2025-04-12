@@ -7,7 +7,7 @@ include '../config/database.php';
 // Include model files
 include '../models/Package.php';
 include '../models/MobileFeature.php';
-include '../models/PackageFeature.php';
+include '../models/BroadbandFeature.php';
 include '../models/TabletSpec.php';
 
 // Get the PackageID from the URL
@@ -24,8 +24,8 @@ if ($package->Type === 'MobileOnly') {
     $mobileFeature = new MobileFeature($pdo);
     $features = $mobileFeature->getFeaturesByPackageId($packageId);
 } else {
-    $packageFeature = new PackageFeature($pdo);
-    $features = $packageFeature->getFeaturesByPackageId($packageId);
+    $BroadbandFeature = new BroadbandFeature($pdo);
+    $features = $BroadbandFeature->getFeaturesByPackageId($packageId);
 }
 
 // Fetch tablet specs if the package is a tablet plan

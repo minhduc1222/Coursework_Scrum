@@ -4,12 +4,12 @@ include '../config/database.php';
 
 // Include model files
 include '../models/Package.php';
-include '../models/PackageFeature.php'; // For Broadband features
+include '../models/BroadbandFeature.php'; // For Broadband features
 include '../models/TabletSpec.php';     // For Tablet specs
 include '../models/MobileFeature.php';  // For Mobile features
 
 // Instantiate the new classes
-$packageFeature = new PackageFeature($pdo);
+$broadbandFeature = new BroadbandFeature($pdo);
 $tabletSpec = new TabletSpec($pdo);
 $mobileFeature = new MobileFeature($pdo);
 

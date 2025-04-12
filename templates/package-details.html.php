@@ -1,5 +1,5 @@
 <?php
-// package-details.html.php
+// templates/package-details.html.php
 ?>
 
 <div class="p-4">
@@ -113,7 +113,7 @@
         <!-- Add to Cart -->
         <div class="mt-4 flex justify-between items-center">
             <p class="text-xl font-bold text-blue-600">£<?= number_format($package->Price, 2) ?>/mo</p>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add to Cart</button>
+            <a href="../includes/cart.php?action=add&id=<?= $package->PackageID ?>" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add to Cart</a>
         </div>
     </div>
 </div>
