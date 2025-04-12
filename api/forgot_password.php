@@ -1,6 +1,6 @@
 <?php
-require "../config/database.php";
-require "../config/databasefunction.php";
+require "../include/database.php";
+require "../include/databasefunction.php";
 require_once "utils.php";
 
 $contentType = $_SERVER["CONTENT_TYPE"] ?? '';

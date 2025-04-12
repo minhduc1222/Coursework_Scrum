@@ -22,19 +22,19 @@
 
         <div class="p-6 pt-0">
             <!-- Registration Form -->
-            <form action="../api/register.html.php" method="POST" id="registerForm">
-                <!-- Personal Information -->
-                <div class="mb-6">
-                    <!-- Icon -->
-                    <div class="flex justify-center mb-4">
-                        <div class="bg-blue-500 rounded-full p-3 w-12 h-12 flex items-center justify-center">
-                            <i class="fas fa-user text-white text-xl"></i>
-                        </div>
+        <form action="../api/register.php" method="POST" id="registerForm">
+            <!-- Personal Information -->
+            <div class="mb-6">
+                <!-- Icon -->
+                <div class="flex justify-center mb-4">
+                    <div class="bg-blue-500 rounded-full p-3 w-12 h-12 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-xl"></i>
                     </div>
-                    
-                    <!-- Title -->
-                    <h2 class="text-center text-xl font-semibold text-blue-500 mb-1">Create Your Account</h2>
-                    <p class="text-center text-gray-500 text-sm mb-6">Fill in all the details below</p>
+                </div>
+                
+                <!-- Title -->
+                <h2 class="text-center text-xl font-semibold text-blue-500 mb-1">Create Your Account</h2>
+                <p class="text-center text-gray-500 text-sm mb-6">Fill in all the details below</p>
                     
                     <!-- Name Input -->
                     <div class="mb-4">

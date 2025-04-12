@@ -1,4 +1,4 @@
 <?php
-  header("Location: api/register.php");
+  header("Location: api/login.php");
   exit();
 ?>

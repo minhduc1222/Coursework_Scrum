@@ -177,7 +177,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = 'dashboard.php';
+                        window.location.href = '../homepages.php';
                     } else {
                         alert(data.message || 'Login failed. Please try again.');
                     }
