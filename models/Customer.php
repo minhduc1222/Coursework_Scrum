@@ -12,6 +12,8 @@ class Customer {
     public $PhoneNumber;
     public $CreditCardInfo;
     public $RegistrationDate;
+    public $avt_img;
+    public $csv; // New column
 
     public function __construct($db) {
         $this->conn = $db;
@@ -40,13 +42,15 @@ class Customer {
         $this->PhoneNumber = $row['PhoneNumber'];
         $this->CreditCardInfo = $row['CreditCardInfo'];
         $this->RegistrationDate = $row['RegistrationDate'];
+        $this->avt_img = $row['avt_img'];
+        $this->csv = $row['csv']; // Added new column
     }
 
     // Create customer
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET Name=:name, Email=:email, Password=:Password, Address=:address, 
-                      PhoneNumber=:phone, CreditCardInfo=:card";
+                  SET Name=:Name, Email=:email, Password=:Password, Address=:address, 
+                      PhoneNumber=:phone, CreditCardInfo=:card, avt_img=:avt_img, csv=:csv";
         
         $stmt = $this->conn->prepare($query);
         
@@ -57,14 +61,18 @@ class Customer {
         $this->Address = htmlspecialchars(strip_tags($this->Address));
         $this->PhoneNumber = htmlspecialchars(strip_tags($this->PhoneNumber));
         $this->CreditCardInfo = htmlspecialchars(strip_tags($this->CreditCardInfo));
+        $this->avt_img = htmlspecialchars(strip_tags($this->avt_img));
+        $this->csv = htmlspecialchars(strip_tags($this->csv));
         
-        $stmt->bindParam(":name", $this->Name);
+        $stmt->bindParam(":Name", $this->Name);
         $stmt->bindParam(":email", $this->Email);
         $hashedPassword = password_hash($this->Password, PASSWORD_DEFAULT);
         $stmt->bindParam(":Password", $hashedPassword);
         $stmt->bindParam(":address", $this->Address);
         $stmt->bindParam(":phone", $this->PhoneNumber);
         $stmt->bindParam(":card", $this->CreditCardInfo);
+        $stmt->bindParam(":avt_img", $this->avt_img);
+        $stmt->bindParam(":csv", $this->csv);
         
         if($stmt->execute()) {
             return true;
@@ -75,8 +83,8 @@ class Customer {
     // Update customer
     public function update() {
         $query = "UPDATE " . $this->table_name . "
-                SET Name=:name, Email=:email, Address=:address, 
-                    PhoneNumber=:phone, CreditCardInfo=:card
+                SET Name=:Name, Email=:email, Address=:address, 
+                    PhoneNumber=:phone, CreditCardInfo=:card, avt_img=:avt_img, csv=:csv
                 WHERE CustomerID=:id";
         
         $stmt = $this->conn->prepare($query);
@@ -88,12 +96,16 @@ class Customer {
         $this->PhoneNumber = htmlspecialchars(strip_tags($this->PhoneNumber));
         $this->CreditCardInfo = htmlspecialchars(strip_tags($this->CreditCardInfo));
         $this->CustomerID = htmlspecialchars(strip_tags($this->CustomerID));
+        $this->avt_img = htmlspecialchars(strip_tags($this->avt_img));
+        $this->csv = htmlspecialchars(strip_tags($this->csv));
         
-        $stmt->bindParam(":name", $this->Name);
+        $stmt->bindParam(":Name", $this->Name);
         $stmt->bindParam(":email", $this->Email);
         $stmt->bindParam(":address", $this->Address);
         $stmt->bindParam(":phone", $this->PhoneNumber);
         $stmt->bindParam(":card", $this->CreditCardInfo);
+        $stmt->bindParam(":avt_img", $this->avt_img);
+        $stmt->bindParam(":csv", $this->csv);
         $stmt->bindParam(":id", $this->CustomerID);
         
         if($stmt->execute()) {
@@ -117,7 +129,7 @@ class Customer {
 
     // Login customer
     public function login() {
-        $query = "SELECT CustomerID, Name, Password FROM " . $this->table_name . " WHERE Email = ?";
+        $query = "SELECT CustomerID, Name, Password, avt_img, csv FROM " . $this->table_name . " WHERE Email = ?";
         $stmt = $this->conn->prepare($query);
         $this->Email = htmlspecialchars(strip_tags($this->Email));
         $stmt->bindParam(1, $this->Email);
@@ -130,6 +142,18 @@ class Customer {
             }
         }
         return false;
+    }
+
+    // Check if email exists
+    public function emailExists() {
+        $query = "SELECT CustomerID FROM " . $this->table_name . " WHERE Email = :email";
+        $stmt = $this->conn->prepare($query);
+        
+        $this->Email = htmlspecialchars(strip_tags($this->Email));
+        $stmt->bindParam(":email", $this->Email);
+        $stmt->execute();
+        
+        return $stmt->rowCount() > 0;
     }
 }
 ?>

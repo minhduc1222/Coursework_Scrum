@@ -8,7 +8,7 @@ include '../config/database.php';
 include '../models/Package.php';
 include '../models/MobileFeature.php';
 include '../models/BroadbandFeature.php';
-include '../models/TabletSpec.php';
+include '../models/TabletFeature.php';
 
 // Get the PackageID from the URL
 $packageId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -23,16 +23,12 @@ $features = [];
 if ($package->Type === 'MobileOnly') {
     $mobileFeature = new MobileFeature($pdo);
     $features = $mobileFeature->getFeaturesByPackageId($packageId);
-} else {
-    $BroadbandFeature = new BroadbandFeature($pdo);
-    $features = $BroadbandFeature->getFeaturesByPackageId($packageId);
-}
-
-// Fetch tablet specs if the package is a tablet plan
-$specs = [];
-if ($package->Type === 'TabletOnly') {
-    $tabletSpec = new TabletSpec($pdo);
-    $specs = $tabletSpec->getSpecsByPackageId($packageId);
+} elseif ($package->Type === 'BroadbandOnly') {
+    $broadbandFeature = new BroadbandFeature($pdo);
+    $features = $broadbandFeature->getFeaturesByPackageId($packageId);
+} elseif ($package->Type === 'TabletOnly') {
+    $tabletFeature = new TabletFeature($pdo);
+    $features = $tabletFeature->getFeaturesByPackageId($packageId);
 }
 
 // Start output buffering and include the template

@@ -1,27 +1,15 @@
 <?php
 // templates/package-details.html.php
-
-// Determine the header gradient and title based on package type
-$headerGradient = 'gradient-purple'; // Default for Mobile
-$headerTitle = 'Mobile Package'; // Default title
-
-if ($package->Type === 'BroadbandOnly') {
-    $headerGradient = 'gradient-blue'; // Blue gradient for Broadband
-    $headerTitle = 'Broadband Package';
-} elseif ($package->Type === 'TabletOnly') {
-    $headerGradient = 'gradient-green'; // Green gradient for Tablet
-    $headerTitle = 'Tablet Package';
-}
 ?>
 
 <div class="p-4">
     <!-- Header with Gradient -->
-    <div class="<?= htmlspecialchars($headerGradient) ?> text-white p-4 rounded-t-lg">
+    <div class="gradient-purple text-white p-4 rounded-t-lg">
         <div class="flex justify-between items-center">
             <a href="homepages.php">
                 <i class="fas fa-arrow-left text-white"></i>
             </a>
-            <h1 class="text-xl font-bold"><?= htmlspecialchars($headerTitle) ?></h1>
+            <h1 class="text-xl font-bold">Mobile Package</h1>
             <i class="fas fa-share-alt text-white"></i>
         </div>
     </div>
@@ -43,7 +31,7 @@ if ($package->Type === 'BroadbandOnly') {
             </div>
         </div>
 
-        <!-- Core Features (Data, Minutes, Texts for Mobile; Speed for Broadband; Brand for Tablet) -->
+        <!-- Core Features (Data, Minutes, Texts) -->
         <?php if ($package->Type === 'MobileOnly'): ?>
             <div class="mt-4">
                 <h3 class="text-sm font-semibold text-gray-700">Package Includes</h3>
@@ -62,38 +50,6 @@ if ($package->Type === 'BroadbandOnly') {
                     </div>
                 </div>
             </div>
-        <?php elseif ($package->Type === 'BroadbandOnly'): ?>
-            <div class="mt-4">
-                <h3 class="text-sm font-semibold text-gray-700">Package Includes</h3>
-                <div class="grid grid-cols-3 gap-2 mt-2">
-                    <div class="bg-blue-50 p-2 rounded-lg text-center">
-                        <p class="text-sm text-gray-600">DOWNLOAD SPEED</p>
-                        <p class="text-base font-semibold"><?= htmlspecialchars($package->DownloadSpeed) ?>Mbps</p>
-                    </div>
-                    <div class="bg-green-50 p-2 rounded-lg text-center">
-                        <p class="text-sm text-gray-600">UPLOAD SPEED</p>
-                        <p class="text-base font-semibold"><?= htmlspecialchars($package->UploadSpeed) ?>Mbps</p>
-                    </div>
-                    <div class="bg-red-50 p-2 rounded-lg text-center">
-                        <p class="text-sm text-gray-600">DATA</p>
-                        <p class="text-base font-semibold"><?= in_array('Unlimited Data', $features) ? 'Unlimited' : 'Limited' ?></p>
-                    </div>
-                </div>
-            </div>
-        <?php elseif ($package->Type === 'TabletOnly'): ?>
-            <div class="mt-4">
-                <h3 class="text-sm font-semibold text-gray-700">Package Includes</h3>
-                <div class="grid grid-cols-2 gap-2 mt-2">
-                    <div class="bg-blue-50 p-2 rounded-lg text-center">
-                        <p class="text-sm text-gray-600">BRAND</p>
-                        <p class="text-base font-semibold"><?= htmlspecialchars($package->Brand) ?></p>
-                    </div>
-                    <div class="bg-green-50 p-2 rounded-lg text-center">
-                        <p class="text-sm text-gray-600">RATING</p>
-                        <p class="text-base font-semibold"><?= htmlspecialchars($package->Rating) ?>/5</p>
-                    </div>
-                </div>
-            </div>
         <?php endif; ?>
 
         <!-- Additional Features -->
@@ -108,7 +64,7 @@ if ($package->Type === 'BroadbandOnly') {
                         </li>
                     <?php endif; ?>
                 <?php endforeach; ?>
-                <!-- Static features from the image -->
+                <!-- Static features from the second image -->
                 <li class="flex items-center">
                     <i class="fas fa-star text-yellow-500 mr-2"></i>
                     <span class="text-sm text-gray-600">Priority Customer Support</span>
@@ -119,6 +75,21 @@ if ($package->Type === 'BroadbandOnly') {
                 </li>
             </ul>
         </div>
+
+        <!-- Tablet Specs (if applicable) -->
+        <?php if ($package->Type === 'TabletOnly' && !empty($specs)): ?>
+            <div class="mt-4">
+                <h3 class="text-sm font-semibold text-gray-700">Specifications</h3>
+                <ul class="mt-2 space-y-2">
+                    <?php foreach ($specs as $spec): ?>
+                        <li class="flex justify-between">
+                            <span class="text-sm text-gray-600"><?= htmlspecialchars($spec['SpecName']) ?></span>
+                            <span class="text-sm text-gray-800 font-semibold"><?= htmlspecialchars($spec['SpecValue']) ?></span>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
 
         <!-- Terms & Conditions -->
         <div class="mt-4">

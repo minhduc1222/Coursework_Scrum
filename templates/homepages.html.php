@@ -2,9 +2,9 @@
 <header class="bg-gray-800 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center">
-            <div class="bg-white rounded-full w-10 h-10 flex items-center justify-center mr-2">
-                <span class="text-transparent">.</span>
-            </div>
+            <a href="profile.php" class="mr-2">
+                <img src="<?php echo htmlspecialchars($customer->avt_img ?: '../image/default-avatar.png'); ?>" alt="Profile Picture" class="w-10 h-10 rounded-full mb-2">
+            </a>
             <h1 class="text-xl font-bold">CheapDeals</h1>
         </div>
         <div class="flex items-center">

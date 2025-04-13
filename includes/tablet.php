@@ -4,7 +4,7 @@ include '../config/database.php';
 
 // Include model files
 include '../models/Package.php';
-include '../models/TabletSpec.php';
+include '../models/TabletFeature.php';
 
 // Instantiate models
 
@@ -13,7 +13,7 @@ $package = new Package($pdo);
 $tabletPackages = $package->readByType('TabletOnly');
 
 // Get tablet specifications
-$tabletSpec = new TabletSpec($pdo);
+$tabletFeature = new TabletFeature($pdo);
 
 ob_start();
 include '../templates/tablet.html.php';

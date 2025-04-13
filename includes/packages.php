@@ -4,13 +4,13 @@ include '../config/database.php';
 
 // Include model files
 include '../models/Package.php';
-include '../models/BroadbandFeature.php'; // For Broadband features
-include '../models/TabletSpec.php';     // For Tablet specs
-include '../models/MobileFeature.php';  // For Mobile features
+include '../models/BroadbandFeature.php';
+include '../models/TabletFeature.php'; // Corrected name
+include '../models/MobileFeature.php';
 
-// Instantiate the new classes
+// Instantiate feature classes
 $broadbandFeature = new BroadbandFeature($pdo);
-$tabletSpec = new TabletSpec($pdo);
+$tabletFeature = new TabletFeature($pdo);  // corrected from TabletSpec
 $mobileFeature = new MobileFeature($pdo);
 
 // Get the filter type from the query parameter
@@ -22,13 +22,30 @@ $package = new Package($pdo);
 if ($filter_type === 'All') {
     $package_stmt = $package->readAll();
 } else {
-    // Assuming the Package model has a method to filter by type
     $package_stmt = $package->readByType($filter_type);
+}
+
+// Collect all packages with associated features
+$packages = [];
+while ($row = $package_stmt->fetch(PDO::FETCH_ASSOC)) {
+    $pkg = $row;
+
+    // Fetch features based on Type
+    if ($pkg['Type'] === 'MobileOnly') {
+        $pkg['Features'] = $mobileFeature->getFeaturesByPackageId($pkg['PackageID']);
+    } elseif ($pkg['Type'] === 'BroadbandOnly') {
+        $pkg['Features'] = $broadbandFeature->getFeaturesByPackageId($pkg['PackageID']);
+    } elseif ($pkg['Type'] === 'TabletOnly') {
+        $pkg['Features'] = $tabletFeature->getFeaturesByPackageId($pkg['PackageID']); // corrected
+    } else {
+        $pkg['Features'] = [];
+    }
+
+    $packages[] = $pkg;
 }
 
 ob_start();
 include '../templates/packages.html.php';
 $page_content = ob_get_clean();
 
-// Render it inside the layout
 include '../layout-mobile.html.php';

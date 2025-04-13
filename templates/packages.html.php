@@ -102,11 +102,10 @@
             } elseif ($row['Type'] === 'TabletOnly') {
                 if ($row['FreeGB'] > 0) $tags[] = $row['FreeGB'] . 'GB Data';
                 if ($row['Contract']) $tags[] = $row['Contract'];
-                $specs = $tabletSpec->getSpecsByPackageId($row['PackageID']);
-                foreach ($specs as $spec) {
-                    $tags[] = $spec['SpecValue'];
-                }
+                $features = $tabletFeature->getFeaturesByPackageId($row['PackageID']);
+                $tags = array_merge($tags, $features);
             }
+            
             $icon = $row['Type'] === 'MobileOnly' ? 'fa-mobile-alt' : 
                     ($row['Type'] === 'BroadbandOnly' ? 'fa-wifi' : 
                     ($row['Type'] === 'TabletOnly' ? 'fa-tablet-alt' : 'fa-box'));

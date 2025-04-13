@@ -18,9 +18,7 @@ class Package {
     public $IsPopular;
     public $DownloadSpeed;
     public $UploadSpeed;
-    public $StandardPrice;
     public $SetupFee;
-    public $ImageURL;
     public $Brand;
     public $Rating;
     public $UpfrontCost;
@@ -58,9 +56,7 @@ class Package {
             $this->IsPopular = $row['IsPopular'];
             $this->DownloadSpeed = $row['DownloadSpeed'];
             $this->UploadSpeed = $row['UploadSpeed'];
-            $this->StandardPrice = $row['StandardPrice'];
             $this->SetupFee = $row['SetupFee'];
-            $this->ImageURL = $row['ImageURL'];
             $this->Brand = $row['Brand'];
             $this->Rating = $row['Rating'];
             $this->UpfrontCost = $row['UpfrontCost'];
@@ -85,8 +81,8 @@ class Package {
                       Price=:price, FreeMinutes=:minutes, FreeSMS=:sms, FreeGB=:gb, 
                       old_price=:old_price, Contract=:contract, IsPopular=:is_popular, 
                       DownloadSpeed=:download_speed, UploadSpeed=:upload_speed, 
-                      StandardPrice=:standard_price, SetupFee=:setup_fee, 
-                      ImageURL=:image_url, Brand=:brand, Rating=:rating, UpfrontCost=:upfront_cost";
+                       SetupFee=:setup_fee, 
+                      Brand=:brand, Rating=:rating, UpfrontCost=:upfront_cost";
 
         $stmt = $this->conn->prepare($query);
 
@@ -103,9 +99,7 @@ class Package {
         $this->IsPopular = htmlspecialchars(strip_tags($this->IsPopular));
         $this->DownloadSpeed = htmlspecialchars(strip_tags($this->DownloadSpeed));
         $this->UploadSpeed = htmlspecialchars(strip_tags($this->UploadSpeed));
-        $this->StandardPrice = htmlspecialchars(strip_tags($this->StandardPrice));
         $this->SetupFee = htmlspecialchars(strip_tags($this->SetupFee));
-        $this->ImageURL = htmlspecialchars(strip_tags($this->ImageURL));
         $this->Brand = htmlspecialchars(strip_tags($this->Brand));
         $this->Rating = htmlspecialchars(strip_tags($this->Rating));
         $this->UpfrontCost = htmlspecialchars(strip_tags($this->UpfrontCost));
@@ -122,9 +116,7 @@ class Package {
         $stmt->bindParam(":is_popular", $this->IsPopular);
         $stmt->bindParam(":download_speed", $this->DownloadSpeed);
         $stmt->bindParam(":upload_speed", $this->UploadSpeed);
-        $stmt->bindParam(":standard_price", $this->StandardPrice);
         $stmt->bindParam(":setup_fee", $this->SetupFee);
-        $stmt->bindParam(":image_url", $this->ImageURL);
         $stmt->bindParam(":brand", $this->Brand);
         $stmt->bindParam(":rating", $this->Rating);
         $stmt->bindParam(":upfront_cost", $this->UpfrontCost);
@@ -142,8 +134,8 @@ class Package {
                       Price=:price, FreeMinutes=:minutes, FreeSMS=:sms, FreeGB=:gb, 
                       old_price=:old_price, Contract=:contract, IsPopular=:is_popular, 
                       DownloadSpeed=:download_speed, UploadSpeed=:upload_speed, 
-                      StandardPrice=:standard_price, SetupFee=:setup_fee, 
-                      ImageURL=:image_url, Brand=:brand, Rating=:rating, UpfrontCost=:upfront_cost
+                       SetupFee=:setup_fee, 
+                      Brand=:brand, Rating=:rating, UpfrontCost=:upfront_cost
                   WHERE PackageID=:id";
 
         $stmt = $this->conn->prepare($query);
@@ -161,9 +153,7 @@ class Package {
         $this->IsPopular = htmlspecialchars(strip_tags($this->IsPopular));
         $this->DownloadSpeed = htmlspecialchars(strip_tags($this->DownloadSpeed));
         $this->UploadSpeed = htmlspecialchars(strip_tags($this->UploadSpeed));
-        $this->StandardPrice = htmlspecialchars(strip_tags($this->StandardPrice));
         $this->SetupFee = htmlspecialchars(strip_tags($this->SetupFee));
-        $this->ImageURL = htmlspecialchars(strip_tags($this->ImageURL));
         $this->Brand = htmlspecialchars(strip_tags($this->Brand));
         $this->Rating = htmlspecialchars(strip_tags($this->Rating));
         $this->UpfrontCost = htmlspecialchars(strip_tags($this->UpfrontCost));
@@ -181,9 +171,7 @@ class Package {
         $stmt->bindParam(":is_popular", $this->IsPopular);
         $stmt->bindParam(":download_speed", $this->DownloadSpeed);
         $stmt->bindParam(":upload_speed", $this->UploadSpeed);
-        $stmt->bindParam(":standard_price", $this->StandardPrice);
         $stmt->bindParam(":setup_fee", $this->SetupFee);
-        $stmt->bindParam(":image_url", $this->ImageURL);
         $stmt->bindParam(":brand", $this->Brand);
         $stmt->bindParam(":rating", $this->Rating);
         $stmt->bindParam(":upfront_cost", $this->UpfrontCost);

@@ -50,7 +50,7 @@
                             <div class="flex justify-between">
                                 <div>
                                     <p class="text-gray-500 text-sm">STANDARD PRICE</p>
-                                    <p class="text-gray-500 line-through">£<?= number_format($pkg['StandardPrice'], 2) ?>/mo</p>
+                                    <p class="text-gray-500 line-through">£<?= number_format($pkg['old_price'], 2) ?>/mo</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-gray-500 text-sm">APP PRICE</p>

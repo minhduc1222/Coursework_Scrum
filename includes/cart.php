@@ -38,7 +38,6 @@ switch ($action) {
                             'PackageName' => $package->PackageName,
                             'Price' => $package->Price,
                             'Type' => $package->Type,
-                            'ImageURL' => $package->ImageURL
                         ]
                     ];
                 }
@@ -89,5 +88,6 @@ ob_start();
 include '../templates/cart.html.php';
 $page_content = ob_get_clean();
 
-// Render it inside the layout (adjust path if needed)
+// Render it inside the layout
 include '../layout-mobile.html.php';
+?>
