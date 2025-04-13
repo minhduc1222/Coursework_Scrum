@@ -142,7 +142,11 @@ if ($package->Type === 'BroadbandOnly') {
         <!-- Add to Cart -->
         <div class="mt-4 flex justify-between items-center">
             <p class="text-xl font-bold text-blue-600">£<?= number_format($package->Price, 2) ?>/mo</p>
-            <a href="../includes/cart.php?action=add&id=<?= $package->PackageID ?>" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add to Cart</a>
+            <?php if ($alreadyInCart): ?>
+                <button class="bg-gray-400 text-white px-4 py-2 rounded-lg cursor-not-allowed" disabled>Package type added</button>
+            <?php else: ?>
+                <a href="../includes/cart.php?action=add&id=<?= $package->PackageID ?>" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Add to Cart</a>
+            <?php endif; ?>
         </div>
     </div>
 </div>

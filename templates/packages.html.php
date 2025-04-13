@@ -70,15 +70,23 @@
                         <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-1 rounded-full">Popular</span>
                     </div>
                     <p class="text-sm text-gray-600 mt-1"><?php echo htmlspecialchars($row['Description']); ?></p>
-                    <div class="flex items-center mt-1">
+
+                    <!-- ✅ Corrected Star Rating -->
+                    <div class="flex items-center mt-1 text-yellow-400">
                         <?php for ($i = 0; $i < 5; $i++): ?>
-                            <i class="fas fa-star text-yellow-400 text-sm <?php echo $i < floor($row['Rating']) ? '' : 'text-gray-300'; ?>"></i>
+                            <?php if ($i < floor($row['Rating'])): ?>
+                                <i class="fas fa-star"></i>
+                            <?php else: ?>
+                                <i class="far fa-star"></i>
+                            <?php endif; ?>
                         <?php endfor; ?>
                     </div>
+
                     <div class="text-right mt-2">
                         <p class="text-base font-bold text-blue-600">£<?php echo number_format($row['Price'], 2); ?>/mo</p>
                     </div>
                 </a>
+
             <?php } ?>
         </div>
     </div>

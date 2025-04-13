@@ -31,27 +31,27 @@
 
     <!-- Cart Contents -->
     <div>
-        <?php if (empty($_SESSION['cart'])): ?>
-            <p class="text-gray-600">Your cart is empty. <a href="../includes/packages.php" class="text-blue-600 hover:underline">Browse packages</a>.</p>
+    <?php if (empty($_SESSION['cart'])): ?>
+        <p class="text-gray-600">Your cart is empty. <a href="../includes/packages.php" class="text-blue-600 hover:underline">Browse packages</a>.</p>
         <?php else: ?>
             <!-- Cart Items -->
             <div class="space-y-4">
                 <?php
                 $total = 0;
                 foreach ($_SESSION['cart'] as $package_id => $item):
-                    $subtotal = $item['quantity'] * $item['package']['Price'];
-                    $total += $subtotal;
+                    $price = $item['package']['Price'];
+                    $total += $price;
                 ?>
                     <div class="flex items-center bg-white border border-gray-200 rounded-lg p-4 shadow">
                         <!-- Package Icon -->
                         <div class="<?php
-                                echo match ($item['package']['Type']) {
-                                    'Mobile' => 'bg-blue-100',
-                                    'Broadband' => 'bg-green-100',
-                                    'Tablet' => 'bg-yellow-100',
-                                    default => 'bg-gray-200',
-                                };
-                            ?> rounded-full w-16 h-16 flex items-center justify-center mr-4">
+                            echo match ($item['package']['Type']) {
+                                'Mobile' => 'bg-blue-100',
+                                'Broadband' => 'bg-green-100',
+                                'Tablet' => 'bg-yellow-100',
+                                default => 'bg-gray-200',
+                            };
+                        ?> rounded-full w-16 h-16 flex items-center justify-center mr-4">
                             <?php if ($item['package']['Type'] === 'Mobile'): ?>
                                 <i class="fas fa-mobile-alt text-blue-500 text-xl"></i>
                             <?php elseif ($item['package']['Type'] === 'Broadband'): ?>
@@ -62,23 +62,18 @@
                                 <i class="fas fa-box text-gray-500 text-xl"></i>
                             <?php endif; ?>
                         </div>
+
                         <!-- Package Details -->
                         <div class="flex-1">
-                            <h4 class="text-base font-semibold"><?php echo htmlspecialchars($item['package']['PackageName']); ?></h4>
-                            <p class="text-sm text-gray-600"><?php echo htmlspecialchars($item['package']['Type']); ?></p>
-                            <p class="text-sm font-bold text-blue-600">£<?php echo number_format($item['package']['Price'], 2); ?> /mo</p>
-                            <!-- Quantity Update -->
-                            <form action="../includes/cart.php" method="GET" class="flex items-center mt-2">
-                                <input type="hidden" name="action" value="update">
-                                <input type="hidden" name="id" value="<?php echo $package_id; ?>">
-                                <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" min="0" class="w-16 border border-gray-300 rounded-lg px-2 py-1 mr-2">
-                                <button type="submit" class="text-blue-600 text-sm hover:underline">Update</button>
-                            </form>
+                            <h4 class="text-base font-semibold"><?= htmlspecialchars($item['package']['PackageName']) ?></h4>
+                            <p class="text-sm text-gray-600"><?= htmlspecialchars($item['package']['Type']) ?></p>
+                            <p class="text-sm font-bold text-blue-600">£<?= number_format($item['package']['Price'], 2) ?> /mo</p>
                         </div>
-                        <!-- Subtotal and Remove -->
+
+                        <!-- Remove -->
                         <div class="text-right">
-                            <p class="text-sm font-bold">Subtotal: £<?php echo number_format($subtotal, 2); ?> /mo</p>
-                            <a href="../includes/cart.php?action=remove&id=<?php echo $package_id; ?>" class="text-red-500 text-sm hover:underline">Remove</a>
+                            <p class="text-sm font-bold">£<?= number_format($item['package']['Price'], 2) ?> /mo</p>
+                            <a href="../includes/cart.php?action=remove&id=<?= $package_id ?>" class="text-red-500 text-sm hover:underline">Remove</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -88,14 +83,15 @@
             <div class="mt-6 p-4 bg-gray-200 rounded-lg">
                 <div class="flex justify-between items-center">
                     <h3 class="text-lg font-semibold">Total</h3>
-                    <p class="text-lg font-bold">£<?php echo number_format($total, 2); ?> /mo</p>
+                    <p class="text-lg font-bold">£<?= number_format($total, 2) ?> /mo</p>
                 </div>
                 <div class="mt-4 flex justify-between">
                     <a href="../includes/cart.php?action=clear" class="text-red-500 font-medium hover:underline">Clear Cart</a>
-                    <a href="<?php echo isset($_SESSION['customer_id']) ? '../includes/checkout.php' : '../includes/login.php?redirect=checkout'; ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Proceed to Checkout</a>
+                    <a href="<?= isset($_SESSION['customer_id']) ? '../includes/checkout.php' : '../includes/login.php?redirect=checkout'; ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Proceed to Checkout</a>
                 </div>
             </div>
         <?php endif; ?>
     </div>
+
 </main>
 

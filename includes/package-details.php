@@ -18,6 +18,22 @@ $package = new Package($pdo);
 $package->PackageID = $packageId;
 $package->readOne();
 
+// Check if same type already exists in cart
+// Ensure the session is started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+$alreadyInCart = false;
+if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+    foreach ($_SESSION['cart'] as $item) {
+        if (isset($item['package']['Type']) && $item['package']['Type'] === $package->Type) {
+            $alreadyInCart = true;
+            break;
+        }
+    }
+}
+
 // Fetch features based on package type
 $features = [];
 if ($package->Type === 'MobileOnly') {

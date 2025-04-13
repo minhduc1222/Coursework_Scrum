@@ -75,20 +75,22 @@
             $discount = $row['DiscountPercentage'];
             $name = htmlspecialchars($row['DealName']);
             $desc = htmlspecialchars($row['Description']);
+            $deal_id = $row['DealID'];
         ?>
-        <div class="bg-white rounded-lg shadow-md mb-4 flex overflow-hidden">
-            <div class="gradient-blue text-white p-4 flex flex-col justify-center items-center w-24">
-                <div class="text-2xl font-bold"><?= $discount ?>%</div>
-                <div class="text-sm">OFF</div>
+        <a href="deal-details.php?deal_id=<?= $deal_id ?>" class="block">
+            <div class="bg-white rounded-lg shadow-md mb-4 flex overflow-hidden hover:shadow-lg transition-shadow">
+                <div class="gradient-blue text-white p-4 flex flex-col justify-center items-center w-24">
+                    <div class="text-2xl font-bold"><?= $discount ?>%</div>
+                    <div class="text-sm">OFF</div>
+                </div>
+                <div class="p-4 flex-1">
+                    <h3 class="font-bold"><?= $name ?></h3>
+                    <p class="text-gray-600 text-sm"><?= $desc ?></p>
+                    <span class="text-blue-600 text-sm">View Details</span>
+                </div>
             </div>
-            <div class="p-4 flex-1">
-                <h3 class="font-bold"><?= $name ?></h3>
-                <p class="text-gray-600 text-sm"><?= $desc ?></p>
-                <a href="offers.php" class="text-blue-600 text-sm">View All</a>
-            </div>
-        </div>
-    <?php endwhile; ?>
-
+        </a>
+        <?php endwhile; ?>
     </div>
 </section>
 
@@ -100,64 +102,73 @@
             <a href="packages.php" class="text-blue-600">View All</a>
         </div>
 
-        <?php if ($package_stmt && $package_stmt->rowCount() > 0): ?>
-            <?php while ($row = $package_stmt->fetch(PDO::FETCH_ASSOC)): ?>
-                <?php
-                    $id = htmlspecialchars($row['PackageID']);
-                    $name = htmlspecialchars($row['PackageName']);
-                    $desc = htmlspecialchars($row['Description']);
-                    $price = number_format($row['Price'], 2);
-                    $type = strtolower($row['Type']);
+        <?php
+        $package_stmt->execute();
+        $hasPopular = false;
+        while ($row = $package_stmt->fetch(PDO::FETCH_ASSOC)) {
+            if (!$row['IsPopular']) continue;
 
-                    // Icon logic (example based on type)
-                    $icon = 'fa-box';
-                    $bgColor = 'bg-gray-200';
-                    $textColor = 'text-gray-600';
+            $hasPopular = true;
+            $id = htmlspecialchars($row['PackageID']);
+            $name = htmlspecialchars($row['PackageName']);
+            $desc = htmlspecialchars($row['Description']);
+            $price = number_format($row['Price'], 2);
+            $rating = $row['Rating'];
+            $type = strtolower($row['Type']);
 
-                    if ($type === 'mobile') {
-                        $icon = 'fa-mobile-alt';
-                        $bgColor = 'bg-blue-100';
-                        $textColor = 'text-blue-500';
-                    } elseif ($type === 'broadband') {
-                        $icon = 'fa-wifi';
-                        $bgColor = 'bg-green-100';
-                        $textColor = 'text-green-500';
-                    } elseif ($type === 'tablet') {
-                        $icon = 'fa-tablet-alt';
-                        $bgColor = 'bg-purple-100';
-                        $textColor = 'text-purple-500';
-                    }
-                ?>
-                <a href="package-details.php?id=<?= $id ?>" class="block bg-white rounded-lg shadow-md mb-4 p-4">
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center">
-                            <div class="<?= $bgColor ?> rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                                <i class="fas <?= $icon ?> <?= $textColor ?>"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold"><?= $name ?></h3>
-                                <div class="flex text-yellow-400">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                </div>
-                                <p class="text-gray-600 text-sm"><?= $desc ?></p>
-                            </div>
+            // Icon logic
+            $icon = 'fa-box';
+            $bgColor = 'bg-gray-200';
+            $textColor = 'text-gray-600';
+
+            if ($type === 'mobileonly') {
+                $icon = 'fa-mobile-alt';
+                $bgColor = 'bg-blue-100';
+                $textColor = 'text-blue-500';
+            } elseif ($type === 'broadbandonly') {
+                $icon = 'fa-wifi';
+                $bgColor = 'bg-green-100';
+                $textColor = 'text-green-500';
+            } elseif ($type === 'tabletonly') {
+                $icon = 'fa-tablet-alt';
+                $bgColor = 'bg-purple-100';
+                $textColor = 'text-purple-500';
+            }
+        ?>
+            <a href="package-details.php?id=<?= $id ?>" class="block bg-white rounded-lg shadow-md mb-4 p-4">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        <div class="<?= $bgColor ?> rounded-full w-12 h-12 flex items-center justify-center mr-3">
+                            <i class="fas <?= $icon ?> <?= $textColor ?>"></i>
                         </div>
-                        <div class="text-right">
-                            <p class="text-lg font-bold text-blue-600">£<?= $price ?></p>
-                            <i class="fas fa-chevron-right text-gray-400"></i>
+                        <div>
+                            <h3 class="font-bold"><?= $name ?></h3>
+                            <div class="flex text-yellow-400">
+                                <?php for ($i = 0; $i < 5; $i++): ?>
+                                    <?php if ($i < floor($rating)): ?>
+                                        <i class="fas fa-star"></i>
+                                    <?php else: ?>
+                                        <i class="far fa-star"></i>
+                                    <?php endif; ?>
+                                <?php endfor; ?>
+                            </div>
+                            <p class="text-gray-600 text-sm"><?= $desc ?></p>
                         </div>
                     </div>
-                </a>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p class="text-gray-500">No packages available at the moment.</p>
+                    <div class="text-right">
+                        <p class="text-lg font-bold text-blue-600">£<?= $price ?></p>
+                        <i class="fas fa-chevron-right text-gray-400"></i>
+                    </div>
+                </div>
+            </a>
+        <?php } ?>
+
+        <?php if (!$hasPopular): ?>
+            <p class="text-gray-500">No popular packages available at the moment.</p>
         <?php endif; ?>
     </div>
 </section>
+
 
 <!-- Account Section -->
 <section class="py-6 bg-white">

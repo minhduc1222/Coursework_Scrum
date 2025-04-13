@@ -116,5 +116,34 @@ class Deal {
         return false;
     }
 
+    // Get all packages for a specific deal
+    public function getDealPackages() {
+        $query = "SELECT p.* 
+                 FROM package p 
+                 INNER JOIN deal_package dp ON p.PackageID = dp.PackageID 
+                 WHERE dp.DealID = ?";
+        
+        $stmt = $this->conn->prepare($query);
+        $this->DealID = htmlspecialchars(strip_tags($this->DealID));
+        $stmt->bindParam(1, $this->DealID);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+
+    // Get all packages for all deals
+    public function getAllDealsPackages() {
+        $query = "SELECT d.DealID, d.DealName, p.* 
+                 FROM " . $this->table_name . " d 
+                 LEFT JOIN deal_package dp ON d.DealID = dp.DealID 
+                 LEFT JOIN package p ON dp.PackageID = p.PackageID 
+                 ORDER BY d.DealID";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+
 }
 ?>

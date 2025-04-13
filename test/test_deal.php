@@ -1,5 +1,5 @@
 <?php
-require_once '../config/db.php';       // Your PDO connection
+require_once '../config/database.php';       // Your PDO connection
 require_once '../models/Deal.php';     // Your Deal class
 
 // Create Deal instance
@@ -65,5 +65,18 @@ if ($deal->delete()) {
     echo "❌ Failed to delete deal.<br>";
 }
 
+echo "<h3>Deal Packages:</h3>";
+$deal->DealID = 1;
+echo "Deal ID: " . $deal->DealID . "<br>";
+$stmt = $deal->getDealPackages();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo "Package: " . $row['PackageName'] . " - Price: $" . $row['Price'] . "<br>";
+}
+
+echo "<h3>All Deals with Packages:</h3>";
+$stmt = $deal->getAllDealsPackages();
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    echo "Deal: " . $row['DealName'] . " - Package: " . ($row['PackageName'] ?: 'None') . "<br>";
+}
 
 ?>
