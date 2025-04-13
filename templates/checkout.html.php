@@ -168,23 +168,10 @@
             <?php endforeach; ?>
         </div>
 
-        <!-- Deals and Special Offers -->
+        <!-- and Special Offers -->
         <div class="mt-6">
             <h2 class="text-lg font-semibold mb-2">Apply Discounts</h2>
             <form method="POST" action="checkout.php">
-                <!-- Deals -->
-                <div class="mb-4">
-                    <label for="deal_id" class="block text-gray-700 font-medium mb-1">Select a Deal</label>
-                    <select name="deal_id" id="deal_id" class="w-full p-2 border rounded">
-                        <option value="">No Deal</option>
-                        <?php foreach ($deals as $deal): ?>
-                            <option value="<?php echo $deal['DealID']; ?>">
-                                <?php echo htmlspecialchars($deal['DealName']) . " (" . $deal['DiscountPercentage'] . "% off)"; ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
                 <!-- Special Offers -->
                 <div class="mb-4">
                     <label for="special_offer_id" class="block text-gray-700 font-medium mb-1">Select a Special Offer</label>

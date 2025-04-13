@@ -32,7 +32,7 @@
     <!-- Cart Contents -->
     <div>
     <?php if (empty($_SESSION['cart'])): ?>
-        <p class="text-gray-600">Your cart is empty. <a href="../includes/packages.php" class="text-blue-600 hover:underline">Browse packages</a>.</p>
+        <p class="text-gray-600">Your cart is empty. <a href="packages.php" class="text-blue-600 hover:underline">Browse packages</a>.</p>
         <?php else: ?>
             <!-- Cart Items -->
             <div class="space-y-4">
@@ -73,7 +73,7 @@
                         <!-- Remove -->
                         <div class="text-right">
                             <p class="text-sm font-bold">£<?= number_format($item['package']['Price'], 2) ?> /mo</p>
-                            <a href="../includes/cart.php?action=remove&id=<?= $package_id ?>" class="text-red-500 text-sm hover:underline">Remove</a>
+                            <a href="cart.php?action=remove&id=<?= $package_id ?>" class="text-red-500 text-sm hover:underline">Remove</a>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -86,8 +86,8 @@
                     <p class="text-lg font-bold">£<?= number_format($total, 2) ?> /mo</p>
                 </div>
                 <div class="mt-4 flex justify-between">
-                    <a href="../includes/cart.php?action=clear" class="text-red-500 font-medium hover:underline">Clear Cart</a>
-                    <a href="<?= isset($_SESSION['customer_id']) ? '../includes/checkout.php' : '../includes/login.php?redirect=checkout'; ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Proceed to Checkout</a>
+                    <a href="cart.php?action=clear" class="text-red-500 font-medium hover:underline">Clear Cart</a>
+                    <a href="<?= isset($_SESSION['customer_id']) ? 'checkout.php' : 'login.php?redirect=checkout'; ?>" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Proceed to Checkout</a>
                 </div>
             </div>
         <?php endif; ?>

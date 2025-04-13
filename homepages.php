@@ -4,13 +4,13 @@
 session_start(); // Start the session
 
 // Include database configuration
-include '../config/database.php';
+include './includes/database.php';
 
 // Include model files
-include '../models/Package.php';
-include '../models/Deal.php';
-include '../models/SpecialOffer.php';
-include '../models/Customer.php';
+include './models/Package.php';
+include './models/Deal.php';
+include './models/SpecialOffer.php';
+include './models/Customer.php';
 
 // Get all deals
 $deal = new Deal($pdo);
@@ -27,14 +27,14 @@ $customer = new Customer($pdo);
 if (isset($_SESSION['customer_id'])) {
     $customer->CustomerID = $_SESSION['customer_id'];
     $customer->readOne(); // Fetch customer data
-    $avatar_url = $customer->avt_img ? htmlspecialchars($customer->avt_img) : '../assets/default-avatar.png'; // Fallback to default avatar
+    $avatar_url = $customer->avt_img ? htmlspecialchars($customer->avt_img) : './assets/default-avatar.png'; // Fallback to default avatar
 } else {
-    $avatar_url = '../assets/default-avatar.png'; // Default avatar for non-logged-in users
+    $avatar_url = './assets/default-avatar.png'; // Default avatar for non-logged-in users
 }
 
 ob_start();
-include '../templates/homepages.html.php';
+include './templates/homepages.html.php';
 $page_content = ob_get_clean();
 
 // Render it inside the layout
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';

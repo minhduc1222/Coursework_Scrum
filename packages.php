@@ -1,12 +1,12 @@
 <?php
 // Include database configuration
-include '../config/database.php';
+include './includes/database.php';
 
 // Include model files
-include '../models/Package.php';
-include '../models/BroadbandFeature.php';
-include '../models/TabletFeature.php'; // Corrected name
-include '../models/MobileFeature.php';
+include './models/Package.php';
+include './models/BroadbandFeature.php';
+include './models/TabletFeature.php'; // Corrected name
+include './models/MobileFeature.php';
 
 // Instantiate feature classes
 $broadbandFeature = new BroadbandFeature($pdo);
@@ -45,7 +45,7 @@ while ($row = $package_stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 ob_start();
-include '../templates/packages.html.php';
+include './templates/packages.html.php';
 $page_content = ob_get_clean();
 
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';

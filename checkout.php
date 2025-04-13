@@ -1,11 +1,11 @@
 <?php
 session_start();
 
-include '../config/database.php';
-include '../models/Package.php';
-include '../models/Order.php';
-include '../models/Deal.php';
-include '../models/SpecialOffer.php';
+include './includes/database.php';
+include './models/Package.php';
+include './models/Order.php';
+include './models/Deal.php';
+include './models/SpecialOffer.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['customer_id'])) {
@@ -187,7 +187,7 @@ if (!$is_deal_checkout) {
 
 // Load the checkout template
 ob_start();
-include '../templates/checkout.html.php';
+include './templates/checkout.html.php';
 $page_content = ob_get_clean();
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';
 ?>

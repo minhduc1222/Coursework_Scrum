@@ -1,5 +1,5 @@
-
-<header class="bg-gray-800 text-white p-4">
+<!-- bg-gray-800 text-white -->
+<header class="bg-gray-800 text-white py-4 p-4">
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center">
             <a href="profile.php" class="mr-2">
@@ -23,7 +23,7 @@
 </header>
 
 <!-- Main Promotion Banner -->
-<section class="gradient-purple text-white p-6">
+<section class="gradient-blue text-white p-6">
     <div class="container mx-auto">
         <h2 class="text-2xl font-bold">15% OFF</h2>
         <p class="mb-4">All packages when ordered through the app</p>

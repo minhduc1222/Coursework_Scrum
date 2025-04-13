@@ -7,7 +7,7 @@
             </div>
         <?php endif; ?>
         
-        <form action="../includes/register.php" method="POST" class="space-y-4">
+        <form action="../register.php" method="POST" class="space-y-4">
             <div>
                 <label class="block text-sm font-medium mb-1">Name</label>
                 <div class="flex items-center border rounded-md p-2">

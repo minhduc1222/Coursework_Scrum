@@ -1,8 +1,8 @@
 <?php
 session_start();
 
-include '../config/database.php';
-include '../models/Package.php';
+include './includes/database.php';
+include './models/Package.php';
 
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
@@ -65,6 +65,6 @@ switch ($action) {
 
 // Load cart display
 ob_start();
-include '../templates/cart.html.php';
+include './templates/cart.html.php';
 $page_content = ob_get_clean();
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';

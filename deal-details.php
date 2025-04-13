@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-include '../config/database.php';
-include '../models/Deal.php';
-include '../models/Package.php';
+include './includes/database.php';
+include './models/Deal.php';
+include './models/Package.php';
 
 $dealModel = new Deal($pdo);
 $packageModel = new Package($pdo);
@@ -39,7 +39,7 @@ $discounted_total = $total * (1 - $discount_percentage / 100);
 
 // Load the template
 ob_start();
-include '../templates/deal-details.html.php';
+include './templates/deal-details.html.php';
 $page_content = ob_get_clean();
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';
 ?>

@@ -10,10 +10,10 @@ if (!isset($_SESSION['customer_id'])) {
 }
 
 // Include database configuration
-include '../config/database.php';
+include './includes/database.php';
 
 // Include Customer model
-include '../models/Customer.php';
+include './models/Customer.php';
 
 // Instantiate Customer model
 $customer = new Customer($pdo);
@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 
     // Handle profile picture upload
     if (isset($_FILES['avt_img']) && $_FILES['avt_img']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = '../image/'; // Directory to store uploaded images
+        $upload_dir = './image/'; // Directory to store uploaded images
         $file_name = basename($_FILES['avt_img']['name']);
         $target_file = $upload_dir . time() . '_' . $file_name;
 
@@ -55,8 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 
 // Start output buffering and include the template
 ob_start();
-include '../templates/profile.html.php';
+include './templates/profile.html.php';
 $page_content = ob_get_clean();
 
 // Render it inside the layout
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';

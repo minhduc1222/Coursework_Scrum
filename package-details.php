@@ -2,13 +2,13 @@
 // package-details.php
 
 // Include database configuration
-include '../config/database.php';
+include './includes/database.php';
 
 // Include model files
-include '../models/Package.php';
-include '../models/MobileFeature.php';
-include '../models/BroadbandFeature.php';
-include '../models/TabletFeature.php';
+include './models/Package.php';
+include './models/MobileFeature.php';
+include './models/BroadbandFeature.php';
+include './models/TabletFeature.php';
 
 // Get the PackageID from the URL
 $packageId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -49,8 +49,8 @@ if ($package->Type === 'MobileOnly') {
 
 // Start output buffering and include the template
 ob_start();
-include '../templates/package-details.html.php';
+include './templates/package-details.html.php';
 $page_content = ob_get_clean();
 
 // Render it inside the layout
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';

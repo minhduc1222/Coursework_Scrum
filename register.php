@@ -1,18 +1,18 @@
 <?php
 // Include database configuration
-include '../config/database.php';
+include './includes/database.php';
 
 // Include model files
-include '../models/Customer.php';
+include './models/Customer.php';
 
 // Instantiate customer model
 $customer = new Customer($pdo);
 
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     ob_start();
-    include '../templates/register.html.php';
+    include './templates/register.html.php';
     $page_content = ob_get_clean();
-    include '../layout-mobile.html.php';
+    include './layout-mobile.html.php';
     exit;
 }
 
@@ -21,9 +21,9 @@ foreach ($required as $field) {
     if (empty($_POST[$field])) {
         $error = "All fields are required.";
         ob_start();
-        include '../templates/register.html.php';
+        include './templates/register.html.php';
         $page_content = ob_get_clean();
-        include '../layout-mobile.html.php';
+        include './layout-mobile.html.php';
         exit;
     }
 }
@@ -38,27 +38,27 @@ $customer->Address = filter_var(trim($_POST['address']), FILTER_SANITIZE_STRING)
 if ($password !== $confirm_password) {
     $error = "Passwords do not match.";
     ob_start();
-    include '../templates/register.html.php';
+    include './templates/register.html.php';
     $page_content = ob_get_clean();
-    include '../layout-mobile.html.php';
+    include './layout-mobile.html.php';
     exit;
 }
 
 if (strlen($password) < 8) {
     $error = "Password must be at least 8 characters.";
     ob_start();
-    include '../templates/register.html.php';
+    include './templates/register.html.php';
     $page_content = ob_get_clean();
-    include '../layout-mobile.html.php';
+    include './layout-mobile.html.php';
     exit;
 }
 
 if ($customer->emailExists()) {
     $error = "Email already registered.";
     ob_start();
-    include '../templates/register.html.php';
+    include './templates/register.html.php';
     $page_content = ob_get_clean();
-    include '../layout-mobile.html.php';
+    include './layout-mobile.html.php';
     exit;
 }
 
@@ -71,8 +71,8 @@ if ($customer->create()) {
 
 $error = "Registration failed. Please try again.";
 ob_start();
-include '../templates/register.html.php';
+include './templates/register.html.php';
 $page_content = ob_get_clean();
-include '../layout-mobile.html.php';
+include './layout-mobile.html.php';
 exit;
 ?>
