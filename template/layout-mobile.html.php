@@ -65,26 +65,49 @@
         <!-- Bottom Navigation -->
         <nav class="bottom-nav">
             <div class="flex justify-around">
-                <a href="homepages.php" class="flex flex-col items-center p-2 text-gray-500">
-                    <i class="fas fa-home"></i>
-                    <span class="text-xs">Home</span>
-                </a>
-                <a href="packages.php" class="flex flex-col items-center p-2 text-blue-500">
-                    <i class="fas fa-box"></i>
-                    <span class="text-xs">Package</span>
-                </a>
-                <a href="search.php" class="flex flex-col items-center p-2 text-gray-500">
-                    <i class="fas fa-search"></i>
-                    <span class="text-xs">Search</span>
-                </a>
-                <a href="bill.php" class="flex flex-col items-center p-2 text-gray-500">
-                    <i class="fas fa-file-invoice"></i>
-                    <span class="text-xs">Bill</span>
-                </a>
-                <a href="support.php" class="flex flex-col items-center p-2 text-gray-500">
-                    <i class="fas fa-headset"></i>
-                    <span class="text-xs">Support</span>
-                </a>
+            <a href="homepages.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
+                <i class="fas fa-home"></i>
+                <span class="text-xs">Home</span>
+            </a>
+            <a href="packages.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
+                <i class="fas fa-box"></i>
+                <span class="text-xs">Package</span>
+            </a>
+            <a href="search.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
+                <i class="fas fa-search"></i>
+                <span class="text-xs">Search</span>
+            </a>
+            <a href="bill.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
+                <i class="fas fa-file-invoice"></i>
+                <span class="text-xs">Bill</span>
+            </a>
+            <a href="support.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
+                <i class="fas fa-headset"></i>
+                <span class="text-xs">Support</span>
+            </a>
+            <script>
+                function highlightNav(clickedElement) {
+                    // Reset all links to gray
+                    document.querySelectorAll('.bottom-nav a').forEach(link => {
+                        link.classList.remove('text-blue-500');
+                        link.classList.add('text-gray-500');
+                    });
+                    // Highlight the clicked link
+                    clickedElement.classList.remove('text-gray-500');
+                    clickedElement.classList.add('text-blue-500');
+                }
+
+                // Automatically highlight the current page on load
+                document.addEventListener('DOMContentLoaded', () => {
+                    const currentPage = location.pathname.split('/').pop();
+                    document.querySelectorAll('.bottom-nav a').forEach(link => {
+                        if (link.getAttribute('href') === currentPage) {
+                            link.classList.remove('text-gray-500');
+                            link.classList.add('text-blue-500');
+                        }
+                    });
+                });
+            </script>
             </div>
         </nav>
     </div>

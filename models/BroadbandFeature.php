@@ -1,7 +1,7 @@
 <?php
-    class PackageFeature {
+    class BroadbandFeature {
         private $conn;
-        private $table_name = "package_feature";
+        private $table_name = "broadband_features";
 
         public $PackageID;
         public $FeatureID;

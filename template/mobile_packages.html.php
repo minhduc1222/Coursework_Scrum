@@ -56,7 +56,7 @@
                 <!-- Pricing -->
                 <div class="flex justify-between items-center mt-4">
                     <div>
-                        <p class="text-sm text-gray-500 line-through">STANDARD PRICE<br>£<?= number_format($row['StandardPrice'], 2) ?>/mo</p>
+                        <p class="text-sm text-gray-500 line-through">STANDARD PRICE<br>£<?= number_format($row['old_price'], 2) ?>/mo</p>
                     </div>
                     <div class="text-right">
                         <p class="text-sm text-gray-500">APP PRICE</p>

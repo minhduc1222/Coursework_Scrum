@@ -1,8 +1,8 @@
     <?php
     require_once "database.php";
-    require_once __DIR__ . '/../api/utils.php';
+    require_once __DIR__ . '/../authentication/utils.php';
 
-    function getCustomerFromSession() {
+    function getCustomerFromSession(): array|null {
         session_start();
         if (!isset($_SESSION['customer_id'])) return null;
     
@@ -13,40 +13,52 @@
             'phone' => $_SESSION['customer_phone'] ?? '',
             'address' => $_SESSION['customer_address'] ?? '',
             'credit_card' => $_SESSION['customer_credit'] ?? '',
-            'registered' => $_SESSION['customer_registered'] ?? ''
+            'registered' => $_SESSION['customer_registered'] ?? '',
+            'role' => $_SESSION['role'] ?? 1,
+            'loggedIn' => $_SESSION['loggedIn'] ?? false
         ];
-    }
+    }    
+
+    function initializeUserSession(array $user) {
+        session_start();
+        $_SESSION['customer_id'] = $user['CustomerID'];
+        $_SESSION['customer_name'] = $user['Name'];
+        $_SESSION['customer_email'] = $user['Email'];
+        $_SESSION['customer_phone'] = $user['PhoneNumber'];
+        $_SESSION['customer_address'] = $user['Address'];
+        $_SESSION['customer_credit'] = $user['CreditCardInfo'];
+        $_SESSION['customer_registered'] = $user['RegistrationDate'];
+        $_SESSION['role'] = $user['Role'];
+        $_SESSION['loggedIn'] = true;
+    }    
     
-    
-    function loginUser($email, $password) {
+    function loginUser($identifier, $password) {
         global $pdo;
     
-        $stmt = $pdo->prepare("SELECT * FROM customer WHERE Email = ?");
-        $stmt->execute([$email]);
+        $isEmail = filter_var($identifier, FILTER_VALIDATE_EMAIL);
+        $query = $isEmail
+            ? "SELECT * FROM customer WHERE Email = ?"
+            : "SELECT * FROM customer WHERE PhoneNumber = ?";
+    
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([$identifier]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
     
-        if ($user) {
-            if (password_verify($password, $user['Password'])) {
-                session_start();
-                $_SESSION['customer_id'] = $user['CustomerID'];
-                $_SESSION['customer_name'] = $user['Name'];
-                $_SESSION['customer_email'] = $user['Email'];
-                $_SESSION['customer_phone'] = $user['PhoneNumber'];
-                $_SESSION['customer_address'] = $user['Address'];
-                $_SESSION['customer_credit'] = $user['CreditCardInfo'];
-                $_SESSION['customer_registered'] = $user['RegistrationDate'];
+        if ($user && $password === $user['Password']) {
+            session_start();
+            initializeUserSession($user);
     
-                return [
-                    "success" => true,
-                    "message" => "Login successful",
-                    "redirect" => "../dashboard.php"
-                ];
-            } else {
-                return ["success" => false, "message" => "Incorrect password"];
-            }
-        } else {
-            return ["success" => false, "message" => "User not found"];
+            return [
+                "success" => true,
+                "role" => $user['Role'],
+                "message" => "Login successful"
+            ];
         }
+    
+        return [
+            "success" => false,
+            "message" => "Invalid credentials. Please try again."
+        ];
     }
     
 

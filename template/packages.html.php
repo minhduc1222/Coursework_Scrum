@@ -11,8 +11,12 @@
     <!-- Search Bar -->
     <div class="px-4 py-3">
         <div class="relative">
-            <input type="text" placeholder="Search package" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base">
-            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+            <form action="search.php" method="get">
+                <input type="text" name="query" placeholder="Search package" class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base">
+                <button type="submit" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
         </div>
     </div>
 
@@ -66,15 +70,23 @@
                         <span class="bg-gray-200 text-gray-700 text-xs font-bold px-2 py-1 rounded-full">Popular</span>
                     </div>
                     <p class="text-sm text-gray-600 mt-1"><?php echo htmlspecialchars($row['Description']); ?></p>
-                    <div class="flex items-center mt-1">
+
+                    <!-- ✅ Corrected Star Rating -->
+                    <div class="flex items-center mt-1 text-yellow-400">
                         <?php for ($i = 0; $i < 5; $i++): ?>
-                            <i class="fas fa-star text-yellow-400 text-sm <?php echo $i < floor($row['Rating']) ? '' : 'text-gray-300'; ?>"></i>
+                            <?php if ($i < floor($row['Rating'])): ?>
+                                <i class="fas fa-star"></i>
+                            <?php else: ?>
+                                <i class="far fa-star"></i>
+                            <?php endif; ?>
                         <?php endfor; ?>
                     </div>
+
                     <div class="text-right mt-2">
                         <p class="text-base font-bold text-blue-600">£<?php echo number_format($row['Price'], 2); ?>/mo</p>
                     </div>
                 </a>
+
             <?php } ?>
         </div>
     </div>
@@ -93,16 +105,15 @@
             } elseif ($row['Type'] === 'BroadbandOnly') {
                 if ($row['DownloadSpeed'] > 0) $tags[] = $row['DownloadSpeed'] . 'Mbps';
                 if ($row['UploadSpeed'] > 0) $tags[] = 'Up ' . $row['UploadSpeed'] . 'Mbps';
-                $features = $packageFeature->getFeaturesByPackageId($row['PackageID']);
+                $features = $broadbandFeature->getFeaturesByPackageId($row['PackageID']);
                 $tags = array_merge($tags, $features);
             } elseif ($row['Type'] === 'TabletOnly') {
                 if ($row['FreeGB'] > 0) $tags[] = $row['FreeGB'] . 'GB Data';
                 if ($row['Contract']) $tags[] = $row['Contract'];
-                $specs = $tabletSpec->getSpecsByPackageId($row['PackageID']);
-                foreach ($specs as $spec) {
-                    $tags[] = $spec['SpecValue'];
-                }
+                $features = $tabletFeature->getFeaturesByPackageId($row['PackageID']);
+                $tags = array_merge($tags, $features);
             }
+            
             $icon = $row['Type'] === 'MobileOnly' ? 'fa-mobile-alt' : 
                     ($row['Type'] === 'BroadbandOnly' ? 'fa-wifi' : 
                     ($row['Type'] === 'TabletOnly' ? 'fa-tablet-alt' : 'fa-box'));

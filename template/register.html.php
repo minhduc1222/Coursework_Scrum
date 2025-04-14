@@ -22,7 +22,7 @@
 
         <div class="p-6 pt-0">
             <!-- Registration Form -->
-        <form action="../api/register.php" method="POST" id="registerForm">
+        <form action="../authentication/register.php" method="POST" id="registerForm">
             <!-- Personal Information -->
             <div class="mb-6">
                 <!-- Icon -->

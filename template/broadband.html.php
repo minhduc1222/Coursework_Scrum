@@ -22,7 +22,7 @@
             <?php while ($pkg = $broadbandPackages->fetch(PDO::FETCH_ASSOC)): ?>
                 <?php
                     // Get features for the package
-                    $features = $packageFeature->getFeaturesByPackageId($pkg['PackageID']);
+                    $features = $BroadbandFeature->getFeaturesByPackageId($pkg['PackageID']);
                 ?>
                 <div class="bg-white rounded-lg shadow-md mb-6 overflow-hidden">
                     <div class="bg-green-500 text-white p-4 flex items-center">
@@ -50,7 +50,7 @@
                             <div class="flex justify-between">
                                 <div>
                                     <p class="text-gray-500 text-sm">STANDARD PRICE</p>
-                                    <p class="text-gray-500 line-through">£<?= number_format($pkg['StandardPrice'], 2) ?>/mo</p>
+                                    <p class="text-gray-500 line-through">£<?= number_format($pkg['old_price'], 2) ?>/mo</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="text-gray-500 text-sm">APP PRICE</p>

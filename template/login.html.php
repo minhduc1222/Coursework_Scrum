@@ -28,27 +28,12 @@
             </div>
 
             <!-- Login Form -->
-            <form id="loginForm" action="../api/login.php" method="POST" class="mt-8">
-                <!-- Tab Navigation -->
-                <div class="flex mb-6 border rounded-md overflow-hidden">
-                    <button type="button" id="emailTab" class="w-1/2 py-2 px-4 bg-white text-blue-500 font-medium border-b-2 border-blue-500">Email</button>
-                    <button type="button" id="phoneTab" class="w-1/2 py-2 px-4 bg-gray-100 text-gray-500 font-medium">Phone</button>
-                </div>
-
-                <!-- Email Input (Default) -->
-                <div id="emailInput" class="mb-4 relative">
+            <form action="/Coursework_Scrum/authentication/login.php" method="POST">
+                <!-- Email/Phone Input -->
+                <div class="mb-4 relative">
                     <div class="flex items-center px-3 py-2 bg-gray-100 rounded-md">
-                        <i class="fas fa-envelope text-gray-400 mr-2"></i>
-                        <input type="email" name="email" placeholder="Email address" required 
-                            class="w-full bg-gray-100 outline-none text-gray-700">
-                    </div>
-                </div>
-
-                <!-- Phone Input (Hidden by default) -->
-                <div id="phoneInput" class="mb-4 relative hidden">
-                    <div class="flex items-center px-3 py-2 bg-gray-100 rounded-md">
-                        <i class="fas fa-phone text-gray-400 mr-2"></i>
-                        <input type="tel" name="phone" placeholder="Phone number" 
+                        <i class="fas fa-user text-gray-400 mr-2"></i>
+                        <input type="text" name="identifier" placeholder="Email or Phone number" required 
                             class="w-full bg-gray-100 outline-none text-gray-700">
                     </div>
                 </div>
@@ -59,7 +44,6 @@
                         <i class="fas fa-lock text-gray-400 mr-2"></i>
                         <input type="password" name="password" placeholder="Password" required 
                             class="w-full bg-gray-100 outline-none text-gray-700">
-                        <i class="far fa-eye text-gray-400 cursor-pointer toggle-password"></i>
                     </div>
                 </div>
 
@@ -67,8 +51,17 @@
                 <div class="text-right mb-6">
                     <a href="forgot_password.php" class="text-gray-600 text-sm">Forgot password?</a>
                 </div>
+                
+                <!-- Error Message Display -->
+                <?php if (isset($_SESSION['error'])): ?>
+                <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4">
+                    <p><?= htmlspecialchars($_SESSION['error']) ?></p>
+                    <?php unset($_SESSION['error']); ?>
+                </div>
+                <?php endif; ?>
+                
                 <!-- Login Button -->
-                    <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md font-medium">
+                <button type="submit" class="w-full py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md font-medium">
                     Login
                 </button>
 
@@ -96,98 +89,13 @@
                 <div class="text-center">
                     <p class="text-gray-600 text-sm">Don't have an account? <a href="register.php" class="text-black font-semibold">Register</a></p>
                 </div>
+                
+                <!-- Hidden redirect field -->
+                <?php if (isset($_GET['redirect'])): ?>
+                <input type="hidden" name="redirect" value="<?= htmlspecialchars($_GET['redirect']) ?>">
+                <?php endif; ?>
             </form>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Toggle password visibility
-            const togglePassword = document.querySelector('.toggle-password');
-            const passwordInput = document.querySelector('input[name="password"]');
-            
-            togglePassword.addEventListener('click', function() {
-                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-                passwordInput.setAttribute('type', type);
-                this.classList.toggle('fa-eye');
-                this.classList.toggle('fa-eye-slash');
-            });
-
-            // Toggle between email and phone inputs
-            const emailTab = document.getElementById('emailTab');
-            const phoneTab = document.getElementById('phoneTab');
-            const emailInput = document.getElementById('emailInput');
-            const phoneInput = document.getElementById('phoneInput');
-            
-            emailTab.addEventListener('click', function() {
-                // Show email input, hide phone input
-                emailInput.classList.remove('hidden');
-                phoneInput.classList.add('hidden');
-                
-                // Update tab styling
-                emailTab.classList.add('bg-white', 'text-blue-500', 'border-b-2', 'border-blue-500');
-                emailTab.classList.remove('bg-gray-100', 'text-gray-500');
-                phoneTab.classList.add('bg-gray-100', 'text-gray-500');
-                phoneTab.classList.remove('bg-white', 'text-blue-500', 'border-b-2', 'border-blue-500');
-                
-                // Update required attributes
-                emailInput.querySelector('input').setAttribute('required', '');
-                phoneInput.querySelector('input').removeAttribute('required');
-            });
-            
-            phoneTab.addEventListener('click', function() {
-                // Show phone input, hide email input
-                phoneInput.classList.remove('hidden');
-                emailInput.classList.add('hidden');
-                
-                // Update tab styling
-                phoneTab.classList.add('bg-white', 'text-blue-500', 'border-b-2', 'border-blue-500');
-                phoneTab.classList.remove('bg-gray-100', 'text-gray-500');
-                emailTab.classList.add('bg-gray-100', 'text-gray-500');
-                emailTab.classList.remove('bg-white', 'text-blue-500', 'border-b-2', 'border-blue-500');
-                
-                // Update required attributes
-                phoneInput.querySelector('input').setAttribute('required', '');
-                emailInput.querySelector('input').removeAttribute('required');
-            });
-
-            // Form submission with AJAX
-            const loginForm = document.getElementById('loginForm');
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const formData = {};
-                
-                // Check which input is active and get its value
-                if (!emailInput.classList.contains('hidden')) {
-                    formData.email = loginForm.querySelector('input[name="email"]').value;
-                } else {
-                    formData.phone = loginForm.querySelector('input[name="phone"]').value;
-                }
-                
-                formData.password = loginForm.querySelector('input[name="password"]').value;
-                
-                fetch('../api/login.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.href = '../homepages.php';
-                    } else {
-                        alert(data.message || 'Login failed. Please try again.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred during login.');
-                });
-            });
-        });
-    </script>
 </body>
 </html>

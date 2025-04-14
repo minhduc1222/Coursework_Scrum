@@ -1,4 +1,5 @@
 <?php
-  header("Location: api/login.php");
-  exit();
+    // Redirect to the homepage
+    header("Location: ./homepages.php");
+    exit();
 ?>
