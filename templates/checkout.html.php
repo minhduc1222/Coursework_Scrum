@@ -37,25 +37,18 @@
         <div class="space-y-4">
             <?php foreach ($deal_packages as $package): ?>
                 <div class="bg-white p-4 rounded-lg shadow flex items-center">
-                    <!-- Icon Badge based on Package Type -->
-                    <div class="<?php
-                        echo match ($package['Type']) {
-                            'Mobile' => 'bg-blue-100',
-                            'Broadband' => 'bg-green-100',
-                            'Tablet' => 'bg-yellow-100',
-                            default => 'bg-gray-200',
-                        };
-                    ?> rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                        <?php if ($package['Type'] === 'Mobile'): ?>
-                            <i class="fas fa-mobile-alt text-blue-500 text-lg"></i>
-                        <?php elseif ($package['Type'] === 'Broadband'): ?>
-                            <i class="fas fa-wifi text-green-500 text-lg"></i>
-                        <?php elseif ($package['Type'] === 'Tablet'): ?>
-                            <i class="fas fa-tablet-alt text-yellow-500 text-lg"></i>
-                        <?php else: ?>
-                            <i class="fas fa-box text-gray-500 text-lg"></i>
-                        <?php endif; ?>
-                    </div>
+                    <!-- Image or Fallback -->
+                    <?php if (!empty($package['img'])): ?>
+                        <img src="<?= htmlspecialchars($package['img']) ?>" alt="<?= htmlspecialchars($package['PackageName']) ?>" class="w-16 h-16 object-cover rounded mr-4">
+                    <?php elseif ($package['Type'] === 'Broadband'): ?>
+                        <div class="bg-green-100 rounded w-16 h-16 flex items-center justify-center mr-4">
+                            <i class="fas fa-wifi text-green-500 text-xl"></i>
+                        </div>
+                    <?php else: ?>
+                        <div class="bg-gray-100 rounded w-16 h-16 flex items-center justify-center mr-4">
+                            <span class="text-gray-500"><?= htmlspecialchars($package['Type'][0]) ?></span>
+                        </div>
+                    <?php endif; ?>
 
                     <!-- Package Details -->
                     <div class="flex-1">
@@ -151,25 +144,17 @@
         <div class="space-y-4">
             <?php foreach ($cart_items as $packageID => $item): ?>
                 <div class="bg-white p-4 rounded-lg shadow flex items-center">
-                    <!-- Icon Badge based on Package Type -->
-                    <div class="<?php
-                        echo match ($item['Type']) {
-                            'Mobile' => 'bg-blue-100',
-                            'Broadband' => 'bg-green-100',
-                            'Tablet' => 'bg-yellow-100',
-                            default => 'bg-gray-200',
-                        };
-                    ?> rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                        <?php if ($item['Type'] === 'Mobile'): ?>
-                            <i class="fas fa-mobile-alt text-blue-500 text-lg"></i>
+                    <?php if (!empty($item['img'])): ?>
+                            <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['PackageName']) ?>" class="w-16 h-16 object-cover rounded mr-4">
                         <?php elseif ($item['Type'] === 'Broadband'): ?>
-                            <i class="fas fa-wifi text-green-500 text-lg"></i>
-                        <?php elseif ($item['Type'] === 'Tablet'): ?>
-                            <i class="fas fa-tablet-alt text-yellow-500 text-lg"></i>
+                            <div class="bg-green-100 rounded w-16 h-16 flex items-center justify-center mr-4">
+                                <i class="fas fa-wifi text-green-500 text-xl"></i>
+                            </div>
                         <?php else: ?>
-                            <i class="fas fa-box text-gray-500 text-lg"></i>
+                            <div class="bg-gray-100 rounded w-16 h-16 flex items-center justify-center mr-4">
+                                <span class="text-gray-500"><?= htmlspecialchars($item['Type'][0]) ?></span>
+                            </div>
                         <?php endif; ?>
-                    </div>
 
                     <!-- Package Details -->
                     <div class="flex-1">
@@ -264,7 +249,7 @@
             <!-- Buttons -->
             <div class="mt-4 flex justify-between">
                 <a href="cart.php" class="text-blue-600 font-medium">Back to Cart</a>
-                <button type="submit" name="checkout" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Place Order</button>
+                <button type="submit" formaction="confirm_checkout.php" class="bg-blue-600 text-white px-4 py-2 rounded-lg">Place Order</button>
             </div>
         </form>
     <?php endif; ?>

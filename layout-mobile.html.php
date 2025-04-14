@@ -52,6 +52,116 @@
             background: white;
             border-top: 1px solid #e5e7eb;
         }
+        .verification-inputs {
+            display: flex;
+            gap: 8px;
+        }
+        .verification-inputs input {
+            width: 40px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+        }
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin-top: 4px;
+        }
+
+        .category-tab.active {
+            border-bottom: 3px solid #3b82f6;
+            color: #1e40af;
+        }
+        .product-card.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        @media (max-width: 640px) {
+            .category-tab {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+            .product-card {
+                padding: 0.75rem;
+            }
+        }
+
+        .chat-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 100;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgb(37, 99, 235);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, background-color 0.2s;
+            overflow: hidden;
+        }
+        
+        .chat-button::before {
+            content: "";
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .chat-button i {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .chat-button:hover {
+            background-color: rgb(29, 78, 216);
+            transform: scale(1.05);
+        }
+        
+        .chat-button:active {
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 640px) {
+            .chat-button {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+            
+            .chat-button::before {
+                width: 34px;
+                height: 34px;
+            }
+            
+            .chat-button i {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .chat-button {
+                bottom: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+            }
+            
+            .chat-button::before {
+                width: 30px;
+                height: 30px;
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </head>
@@ -81,7 +191,7 @@
                 <i class="fas fa-file-invoice"></i>
                 <span class="text-xs">Bill</span>
             </a>
-            <a href="support.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
+            <a href="enquiry.php" class="flex flex-col items-center p-2 text-gray-500" onclick="highlightNav(this)">
                 <i class="fas fa-headset"></i>
                 <span class="text-xs">Support</span>
             </a>

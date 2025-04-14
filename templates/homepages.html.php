@@ -9,7 +9,7 @@
         </div>
         <div class="flex items-center">
             <a href="cart.php" class="mr-4"><i class="fas fa-shopping-cart"></i></a>
-            <button class="focus:outline-none"><i class="fas fa-bars"></i></button>
+            <a href="./csr/csr_management.php" class="focus:outline-none"><i class="fas fa-bars"></i></a>
         </div>
     </div>
     <div class="container mx-auto mt-4">

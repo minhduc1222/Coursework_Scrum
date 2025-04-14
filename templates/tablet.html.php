@@ -1,7 +1,7 @@
 <section class="py-6">
     <div class="container mx-auto px-4">
         <!-- Header with Gradient -->
-        <div class="gradient-purple text-white p-6 rounded-lg mb-6">
+        <div class="gradient-green text-white p-6 rounded-lg mb-6">
             <div class="flex justify-between items-center">
                 <a href="packages.php">
                     <i class="fas fa-arrow-left text-white"></i>
