@@ -1,6 +1,6 @@
 <?php
 // Include database configuration
-include './includes/database.php';
+include './Include/database.php';
 
 // Include model files
 include './models/Package.php';
@@ -10,7 +10,7 @@ include './models/TabletFeature.php';
 
 // Get tablet packages
 $package = new Package($pdo);
-$tabletPackages = $package->readByType('TabletOnly');
+$tabletPackages = $package->readByType('Tablet');
 
 // Get tablet specifications
 $tabletFeature = new TabletFeature($pdo);

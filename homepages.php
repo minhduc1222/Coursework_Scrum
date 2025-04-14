@@ -4,7 +4,7 @@
 session_start(); // Start the session
 
 // Include database configuration
-include './includes/database.php';
+include './Include/database.php';
 
 // Include model files
 include './models/Package.php';

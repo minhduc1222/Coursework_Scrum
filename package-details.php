@@ -2,7 +2,7 @@
 // package-details.php
 
 // Include database configuration
-include './includes/database.php';
+include './Include/database.php';
 
 // Include model files
 include './models/Package.php';
@@ -36,13 +36,13 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
 
 // Fetch features based on package type
 $features = [];
-if ($package->Type === 'MobileOnly') {
+if ($package->Type === 'Mobile') {
     $mobileFeature = new MobileFeature($pdo);
     $features = $mobileFeature->getFeaturesByPackageId($packageId);
-} elseif ($package->Type === 'BroadbandOnly') {
+} elseif ($package->Type === 'Broadband') {
     $broadbandFeature = new BroadbandFeature($pdo);
     $features = $broadbandFeature->getFeaturesByPackageId($packageId);
-} elseif ($package->Type === 'TabletOnly') {
+} elseif ($package->Type === 'Tablet') {
     $tabletFeature = new TabletFeature($pdo);
     $features = $tabletFeature->getFeaturesByPackageId($packageId);
 }

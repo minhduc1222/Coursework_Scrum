@@ -23,10 +23,10 @@
     <!-- Filter Tabs -->
     <div class="flex justify-start px-4 pb-3 overflow-x-auto space-x-2">
         <a href="packages.php?type=All" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'All' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">All</a>
-        <a href="packages.php?type=MobileOnly" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'MobileOnly' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Mobile</a>
-        <a href="packages.php?type=BroadbandOnly" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'BroadbandOnly' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Broadband</a>
-        <a href="packages.php?type=TabletOnly" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'TabletOnly' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Tablet</a>
-        <a href="packages.php?type=BundlesOnly" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'BundlesOnly' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Bundles</a>
+        <a href="packages.php?type=Mobile" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'Mobile' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Mobile</a>
+        <a href="packages.php?type=Broadband" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'Broadband' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Broadband</a>
+        <a href="packages.php?type=Tablet" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'Tablet' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Tablet</a>
+        <a href="packages.php?type=Bundles" class="px-4 py-2 rounded-full text-sm font-medium <?php echo $filter_type === 'Bundles' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-600'; ?>">Bundles</a>
     </div>
 
     <!-- Featured Bundle -->
@@ -57,9 +57,9 @@
                 if (!$row['IsPopular']) continue;
                 if ($count >= 3) break;
                 $count++;
-                $icon = $row['Type'] === 'MobileOnly' ? 'fa-mobile-alt' : 
-                        ($row['Type'] === 'BroadbandOnly' ? 'fa-wifi' : 
-                        ($row['Type'] === 'TabletOnly' ? 'fa-tablet-alt' : 'fa-box'));
+                $icon = $row['Type'] === 'Mobile' ? 'fa-mobile-alt' : 
+                        ($row['Type'] === 'Broadband' ? 'fa-wifi' : 
+                        ($row['Type'] === 'Tablet' ? 'fa-tablet-alt' : 'fa-box'));
             ?>
                 <a href="package-details.php?id=<?php echo $row['PackageID']; ?>" class="bg-white border border-gray-200 rounded-lg p-3 w-48 flex-shrink-0">
                     <div class="flex justify-between items-center">
@@ -99,24 +99,24 @@
         while ($row = $package_stmt->fetch(PDO::FETCH_ASSOC)) {
             // Fetch tags based on package type
             $tags = [];
-            if ($row['Type'] === 'MobileOnly') {
+            if ($row['Type'] === 'Mobile') {
                 $tags = $mobileFeature->getFeaturesByPackageId($row['PackageID']);
                 if ($row['FreeGB'] > 0 && !in_array('Unlimited Data', $tags)) $tags[] = $row['FreeGB'] . 'GB Data';
-            } elseif ($row['Type'] === 'BroadbandOnly') {
+            } elseif ($row['Type'] === 'Broadband') {
                 if ($row['DownloadSpeed'] > 0) $tags[] = $row['DownloadSpeed'] . 'Mbps';
                 if ($row['UploadSpeed'] > 0) $tags[] = 'Up ' . $row['UploadSpeed'] . 'Mbps';
                 $features = $broadbandFeature->getFeaturesByPackageId($row['PackageID']);
                 $tags = array_merge($tags, $features);
-            } elseif ($row['Type'] === 'TabletOnly') {
+            } elseif ($row['Type'] === 'Tablet') {
                 if ($row['FreeGB'] > 0) $tags[] = $row['FreeGB'] . 'GB Data';
                 if ($row['Contract']) $tags[] = $row['Contract'];
                 $features = $tabletFeature->getFeaturesByPackageId($row['PackageID']);
                 $tags = array_merge($tags, $features);
             }
             
-            $icon = $row['Type'] === 'MobileOnly' ? 'fa-mobile-alt' : 
-                    ($row['Type'] === 'BroadbandOnly' ? 'fa-wifi' : 
-                    ($row['Type'] === 'TabletOnly' ? 'fa-tablet-alt' : 'fa-box'));
+            $icon = $row['Type'] === 'Mobile' ? 'fa-mobile-alt' : 
+                    ($row['Type'] === 'Broadband' ? 'fa-wifi' : 
+                    ($row['Type'] === 'Tablet' ? 'fa-tablet-alt' : 'fa-box'));
         ?>
             <a href="package-details.php?id=<?php echo $row['PackageID']; ?>" class="block bg-white border border-gray-200 rounded-lg p-4 mb-3">
                 <div class="flex justify-between items-start">

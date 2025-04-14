@@ -53,7 +53,10 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] === 'true';
                 </div>
             </div>
             <div class="mt-4">
-                <a href="profile.php?edit=true" class="w-full bg-red-500 text-white py-2 rounded-lg text-center block hover:bg-red-600">Edit Profile</a>
+                <a href="profile.php?edit=true" class="w-full bg-gray-500 text-white py-2 rounded-lg text-center block hover:bg-red-600">Edit Profile</a>
+            </div>
+            <div class="mt-4">
+                <a href="custom_package.php" class="w-full bg-purple-500 text-white py-2 rounded-lg text-center block hover:bg-purple-600">Create Custom Package</a>
             </div>
         </div>
     <?php else: ?>
@@ -103,4 +106,8 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] === 'true';
             </form>
         </div>
     <?php endif; ?>
+
+    <div class="mt-4 text-center">
+        <a href="logout.php" class="w-full bg-red-500 text-white py-2 rounded-lg text-center block hover:bg-gray-600">Logout</a>
+    </div>
 </main>

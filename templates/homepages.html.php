@@ -3,7 +3,7 @@
     <div class="container mx-auto flex justify-between items-center">
         <div class="flex items-center">
             <a href="profile.php" class="mr-2">
-                <img src="<?php echo htmlspecialchars($customer->avt_img ?: '../image/default-avatar.png'); ?>" alt="Profile Picture" class="w-10 h-10 rounded-full mb-2">
+                <img src="<?php echo htmlspecialchars($customer->avt_img ?: './image/default-avatar.png'); ?>" alt="Profile Picture" class="w-10 h-10 rounded-full mb-2">
             </a>
             <h1 class="text-xl font-bold">CheapDeals</h1>
         </div>
@@ -27,7 +27,7 @@
     <div class="container mx-auto">
         <h2 class="text-2xl font-bold">15% OFF</h2>
         <p class="mb-4">All packages when ordered through the app</p>
-        <a href="#packages" class="bg-white text-purple-700 px-6 py-2 rounded-lg font-medium inline-block">Shop Now</a>
+        <a href="#packages" class="bg-white text-blue-700 px-6 py-2 rounded-lg font-medium inline-block">Shop Now</a>
     </div>
 </section>
 
@@ -121,15 +121,15 @@
             $bgColor = 'bg-gray-200';
             $textColor = 'text-gray-600';
 
-            if ($type === 'mobileonly') {
+            if ($type === 'mobile') {
                 $icon = 'fa-mobile-alt';
                 $bgColor = 'bg-blue-100';
                 $textColor = 'text-blue-500';
-            } elseif ($type === 'broadbandonly') {
+            } elseif ($type === 'broadband') {
                 $icon = 'fa-wifi';
                 $bgColor = 'bg-green-100';
                 $textColor = 'text-green-500';
-            } elseif ($type === 'tabletonly') {
+            } elseif ($type === 'tablet') {
                 $icon = 'fa-tablet-alt';
                 $bgColor = 'bg-purple-100';
                 $textColor = 'text-purple-500';
@@ -138,8 +138,8 @@
             <a href="package-details.php?id=<?= $id ?>" class="block bg-white rounded-lg shadow-md mb-4 p-4">
                 <div class="flex justify-between items-center">
                     <div class="flex items-center">
-                        <div class="<?= $bgColor ?> rounded-full w-12 h-12 flex items-center justify-center mr-3">
-                            <i class="fas <?= $icon ?> <?= $textColor ?>"></i>
+                        <div class="<?= $bgColor ?> rounded-full w-24 h-14 flex items-center justify-center mr-4">
+                            <i class="fas <?= $icon ?> <?= $textColor ?> text-2xl"></i>
                         </div>
                         <div>
                             <h3 class="font-bold"><?= $name ?></h3>

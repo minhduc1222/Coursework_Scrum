@@ -1,4 +1,3 @@
-
 <div class="p-4">
     <!-- Header with Gradient -->
     <div class="gradient-purple text-white p-4 rounded-t-lg">
@@ -26,14 +25,22 @@
             ?>
 
             <div class="bg-white p-4 rounded-lg shadow-md relative">
+                <!-- Full-Width Image -->
+                <?php if (!empty($row['img'])): ?>
+                    <img src="<?= htmlspecialchars($row['img']) ?>" alt="abc" class="w-full h-48 object-cover rounded-t-lg">
+                <?php endif; ?>
+
                 <!-- Popular Badge -->
                 <?php if ($isPopular): ?>
                     <span class="absolute top-2 right-2 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Popular</span>
                 <?php endif; ?>
 
-                <!-- Package Name and Contract -->
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($row['PackageName']) ?></h2>
+                <!-- Package Name, Description, and Contract -->
+                <div class="flex justify-between items-center mt-2">
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($row['PackageName']) ?></h2>
+                        <p class="text-sm text-gray-600 mt-1"><?= htmlspecialchars($row['Description']) ?: 'No description available.' ?></p>
+                    </div>
                     <span class="text-sm text-gray-500"><?= htmlspecialchars($row['Contract']) ?></span>
                 </div>
 

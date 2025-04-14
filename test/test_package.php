@@ -1,5 +1,5 @@
 <?php
-require_once '../config/database.php';
+require_once '../includes/database.php';
 require_once '../models/Package.php';
 
 // Create Package instance

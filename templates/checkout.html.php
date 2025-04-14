@@ -36,49 +36,35 @@
         <!-- Packages -->
         <div class="space-y-4">
             <?php foreach ($deal_packages as $package): ?>
-                <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
-                    <div class="flex items-center">
-                        <!-- Icon Badge based on Package Type -->
-                        <div class="<?php
-                            echo match ($package['Type']) {
-                                'MobileOnly' => 'bg-blue-100',
-                                'BroadbandOnly' => 'bg-green-100',
-                                'TabletOnly' => 'bg-yellow-100',
-                                default => 'bg-gray-200',
-                            };
-                        ?> rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                            <?php if ($package['Type'] === 'MobileOnly'): ?>
-                                <i class="fas fa-mobile-alt text-blue-500 text-lg"></i>
-                            <?php elseif ($package['Type'] === 'BroadbandOnly'): ?>
-                                <i class="fas fa-wifi text-green-500 text-lg"></i>
-                            <?php elseif ($package['Type'] === 'TabletOnly'): ?>
-                                <i class="fas fa-tablet-alt text-yellow-500 text-lg"></i>
-                            <?php else: ?>
-                                <i class="fas fa-box text-gray-500 text-lg"></i>
-                            <?php endif; ?>
+                <div class="bg-white p-4 rounded-lg shadow flex items-start">
+                    <!-- Broadband Icon or Small Square Image -->
+                    <?php if ($package['Type'] === 'Broadband'): ?>
+                        <div class="bg-green-100 rounded w-16 h-16 flex items-center justify-center mr-4">
+                            <i class="fas fa-wifi text-green-500 text-xl"></i>
                         </div>
+                    <?php elseif (!empty($package['img'])): ?>
+                        <img src="<?= htmlspecialchars($package['img']) ?>" alt="<?= htmlspecialchars($package['PackageName']) ?>" class="w-16 h-16 object-cover rounded mr-4">
+                    <?php endif; ?>
 
-                        <div>
-                            <h3 class="text-lg font-semibold"><?= htmlspecialchars($package['PackageName']) ?></h3>
-                            <p class="text-gray-600"><?= htmlspecialchars($package['Type']) ?></p>
-                            <p class="text-gray-600 text-sm"><?= htmlspecialchars($package['Description']) ?></p>
-                            <?php if ($package['FreeMinutes'] > 0): ?>
-                                <p class="text-gray-600 text-sm">Minutes: <?= $package['FreeMinutes'] ?></p>
-                            <?php endif; ?>
-                            <?php if ($package['FreeSMS'] > 0): ?>
-                                <p class="text-gray-600 text-sm">SMS: <?= $package['FreeSMS'] ?></p>
-                            <?php endif; ?>
-                            <?php if ($package['FreeGB'] > 0): ?>
-                                <p class="text-gray-600 text-sm">Data: <?= $package['FreeGB'] ?>GB</p>
-                            <?php endif; ?>
-                            <p class="text-blue-600 font-bold">
-                                £<?= number_format($package['Price'] * (1 - $dealModel->DiscountPercentage / 100), 2) ?>/mo
-                            </p>
-
-
-                        </div>
+                    <!-- Package Details -->
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold"><?= htmlspecialchars($package['PackageName']) ?></h3>
+                        <p class="text-gray-600"><?= htmlspecialchars($package['Type']) ?></p>
+                        <p class="text-gray-600 text-sm"><?= htmlspecialchars($package['Description']) ?: 'No description available.' ?></p>
+                        <?php if ($package['FreeMinutes'] > 0): ?>
+                            <p class="text-gray-600 text-sm">Minutes: <?= $package['FreeMinutes'] ?></p>
+                        <?php endif; ?>
+                        <?php if ($package['FreeSMS'] > 0): ?>
+                            <p class="text-gray-600 text-sm">SMS: <?= $package['FreeSMS'] ?></p>
+                        <?php endif; ?>
+                        <?php if ($package['FreeGB'] > 0): ?>
+                            <p class="text-gray-600 text-sm">Data: <?= $package['FreeGB'] ?>GB</p>
+                        <?php endif; ?>
+                        <p class="text-blue-600 font-bold">
+                            £<?= number_format($package['Price'] * (1 - $dealModel->DiscountPercentage / 100), 2) ?>/mo
+                        </p>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right mt-2">
                         <p class="text-gray-600">Original: £<?= number_format($package['Price'], 2) ?>/mo</p>
                     </div>
                 </div>
@@ -103,13 +89,15 @@
             </div>
 
             <!-- Total -->
-            <div class="bg-gray-200 p-4 rounded-lg mt-4 flex justify-between items-center">
-                <h2 class="text-lg font-semibold">Total</h2>
-                <div class="text-right">
-                    <?php if ($discount_percentage > 0): ?>
-                        <p class="text-sm text-gray-600 line-through">£<?= number_format($total, 2) ?>/mo</p>
-                    <?php endif; ?>
-                    <p class="text-xl font-bold">£<?= number_format($discounted_total, 2) ?>/mo</p>
+            <div class="mt-4 p-4 bg-gray-200 rounded-lg">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-lg font-semibold">Total</h2>
+                    <div class="text-right">
+                        <?php if ($discount_percentage > 0): ?>
+                            <p class="text-sm text-gray-600 line-through">£<?= number_format($total, 2) ?>/mo</p>
+                        <?php endif; ?>
+                        <p class="text-xl font-bold">£<?= number_format($discounted_total, 2) ?>/mo</p>
+                    </div>
                 </div>
             </div>
 
@@ -123,53 +111,41 @@
         <!-- Cart-based Checkout -->
         <div class="space-y-4">
             <?php foreach ($cart_items as $packageID => $item): ?>
-                <div class="bg-white p-4 rounded-lg shadow flex items-center justify-between">
-                    <div class="flex items-center">
-                        <!-- Icon Badge based on Package Type -->
-                        <div class="<?php
-                            echo match ($item['Type']) {
-                                'MobileOnly' => 'bg-blue-100',
-                                'BroadbandOnly' => 'bg-green-100',
-                                'TabletOnly' => 'bg-yellow-100',
-                                default => 'bg-gray-200',
-                            };
-                        ?> rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                            <?php if ($item['Type'] === 'MobileOnly'): ?>
-                                <i class="fas fa-mobile-alt text-blue-500 text-lg"></i>
-                            <?php elseif ($item['Type'] === 'BroadbandOnly'): ?>
-                                <i class="fas fa-wifi text-green-500 text-lg"></i>
-                            <?php elseif ($item['Type'] === 'TabletOnly'): ?>
-                                <i class="fas fa-tablet-alt text-yellow-500 text-lg"></i>
-                            <?php else: ?>
-                                <i class="fas fa-box text-gray-500 text-lg"></i>
-                            <?php endif; ?>
+                <div class="bg-white p-4 rounded-lg shadow flex items-start">
+                    <!-- Broadband Icon or Small Square Image -->
+                    <?php if ($item['Type'] === 'Broadband'): ?>
+                        <div class="bg-green-100 rounded w-16 h-16 flex items-center justify-center mr-4">
+                            <i class="fas fa-wifi text-green-500 text-xl"></i>
                         </div>
+                    <?php elseif (!empty($item['img'])): ?>
+                        <img src="<?= htmlspecialchars($item['img']) ?>" alt="<?= htmlspecialchars($item['PackageName']) ?>" class="w-16 h-16 object-cover rounded mr-4">
+                    <?php endif; ?>
 
-                        <div>
-                            <h3 class="text-lg font-semibold"><?= htmlspecialchars($item['PackageName']) ?></h3>
-                            <p class="text-gray-600"><?= htmlspecialchars($item['Type']) ?></p>
-                            <p class="text-gray-600 text-sm"><?= htmlspecialchars($item['Description']) ?></p>
-                            <?php if ($item['FreeMinutes'] > 0): ?>
-                                <p class="text-gray-600 text-sm">Minutes: <?= $item['FreeMinutes'] ?></p>
-                            <?php endif; ?>
-                            <?php if ($item['FreeSMS'] > 0): ?>
-                                <p class="text-gray-600 text-sm">SMS: <?= $item['FreeSMS'] ?></p>
-                            <?php endif; ?>
-                            <?php if ($item['FreeGB'] > 0): ?>
-                                <p class="text-gray-600 text-sm">Data: <?= $item['FreeGB'] ?>GB</p>
-                            <?php endif; ?>
-                            <p class="text-blue-600 font-bold">£<?= number_format($item['Price'], 2) ?>/mo</p>
-                        </div>
+                    <!-- Package Details -->
+                    <div class="flex-1">
+                        <h3 class="text-lg font-semibold"><?= htmlspecialchars($item['PackageName']) ?></h3>
+                        <p class="text-gray-600"><?= htmlspecialchars($item['Type']) ?></p>
+                        <p class="text-gray-600 text-sm"><?= htmlspecialchars($item['Description']) ?: 'No description available.' ?></p>
+                        <?php if ($item['FreeMinutes'] > 0): ?>
+                            <p class="text-gray-600 text-sm">Minutes: <?= $item['FreeMinutes'] ?></p>
+                        <?php endif; ?>
+                        <?php if ($item['FreeSMS'] > 0): ?>
+                            <p class="text-gray-600 text-sm">SMS: <?= $item['FreeSMS'] ?></p>
+                        <?php endif; ?>
+                        <?php if ($item['FreeGB'] > 0): ?>
+                            <p class="text-gray-600 text-sm">Data: <?= $item['FreeGB'] ?>GB</p>
+                        <?php endif; ?>
+                        <p class="text-blue-600 font-bold">£<?= number_format($item['Price'], 2) ?>/mo</p>
                     </div>
-                    <div class="text-right">
+                    <div class="text-right mt-2">
                         <p class="text-gray-600">Price: £<?= number_format($item['Price'], 2) ?>/mo</p>
                     </div>
                 </div>
             <?php endforeach; ?>
         </div>
 
-        <!-- and Special Offers -->
-        <div class="mt-6">
+        <!-- Special Offers -->
+        <div class="mt-4">
             <h2 class="text-lg font-semibold mb-2">Apply Discounts</h2>
             <form method="POST" action="checkout.php">
                 <!-- Special Offers -->
@@ -186,9 +162,11 @@
                 </div>
 
                 <!-- Total -->
-                <div class="bg-gray-200 p-4 rounded-lg mt-4 flex justify-between items-center">
-                    <h2 class="text-lg font-semibold">Total</h2>
-                    <p class="text-xl font-bold">£<?= number_format($cart_total, 2) ?>/mo</p>
+                <div class="p-4 bg-gray-200 rounded-lg">
+                    <div class="flex justify-between items-center">
+                        <h2 class="text-lg font-semibold">Total</h2>
+                        <p class="text-xl font-bold">£<?= number_format($cart_total, 2) ?>/mo</p>
+                    </div>
                 </div>
 
                 <!-- Buttons -->

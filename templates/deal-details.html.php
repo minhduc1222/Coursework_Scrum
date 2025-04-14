@@ -38,17 +38,17 @@
             <!-- Icon Badge based on Package Type -->
             <div class="<?php
                 echo match ($package['Type']) {
-                    'MobileOnly' => 'bg-blue-100',
-                    'BroadbandOnly' => 'bg-green-100',
-                    'TabletOnly' => 'bg-yellow-100',
+                    'Mobile' => 'bg-blue-100',
+                    'Broadband' => 'bg-green-100',
+                    'Tablet' => 'bg-yellow-100',
                     default => 'bg-gray-200',
                 };
             ?> rounded-full w-12 h-12 flex items-center justify-center mr-4">
-                <?php if ($package['Type'] === 'MobileOnly'): ?>
+                <?php if ($package['Type'] === 'Mobile'): ?>
                     <i class="fas fa-mobile-alt text-blue-500 text-lg"></i>
-                <?php elseif ($package['Type'] === 'BroadbandOnly'): ?>
+                <?php elseif ($package['Type'] === 'Broadband'): ?>
                     <i class="fas fa-wifi text-green-500 text-lg"></i>
-                <?php elseif ($package['Type'] === 'TabletOnly'): ?>
+                <?php elseif ($package['Type'] === 'Tablet'): ?>
                     <i class="fas fa-tablet-alt text-yellow-500 text-lg"></i>
                 <?php else: ?>
                     <i class="fas fa-box text-gray-500 text-lg"></i>

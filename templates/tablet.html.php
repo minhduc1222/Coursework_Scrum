@@ -26,21 +26,25 @@
                         $isPopular = $pkg['IsPopular'] == 1;
                     ?>
                     <div class="bg-white p-4 rounded-lg shadow-md relative">
+                        <!-- Full-Width Image -->
+                        <?php if (!empty($pkg['img'])): ?>
+                            <img src="<?= htmlspecialchars($pkg['img']) ?>" alt="<?= htmlspecialchars($pkg['PackageName']) ?>" class="w-full h-48 object-cover rounded-t-lg">
+                        <?php endif; ?>
+
                         <!-- Popular Badge -->
                         <?php if ($isPopular): ?>
                             <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-semibold px-2 py-1 rounded-full">Popular</span>
                         <?php endif; ?>
 
-                        <!-- Image and Title -->
-                        <div class="flex items-center space-x-4 mb-4">
-                            <div>
-                                <h2 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($pkg['PackageName']) ?></h2>
-                                <p class="text-sm text-gray-500"><?= htmlspecialchars($pkg['Brand']) ?></p>
-                            </div>
+                        <!-- Title, Brand, and Description -->
+                        <div class="mt-2">
+                            <h2 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($pkg['PackageName']) ?></h2>
+                            <p class="text-sm text-gray-500"><?= htmlspecialchars($pkg['Brand']) ?></p>
+                            <p class="text-sm text-gray-600 mt-1"><?= htmlspecialchars($pkg['Description']) ?: 'No description available.' ?></p>
                         </div>
 
                         <!-- Data & Contract -->
-                        <div class="grid grid-cols-2 gap-4 text-center mb-4">
+                        <div class="grid grid-cols-2 gap-4 text-center mt-4">
                             <div class="bg-pink-50 p-2 rounded-lg">
                                 <p class="text-sm text-gray-600">DATA</p>
                                 <p class="text-base font-semibold"><?= htmlspecialchars($pkg['FreeGB']) ?>GB</p>
@@ -52,7 +56,7 @@
                         </div>
 
                         <!-- Pricing -->
-                        <div class="flex justify-between items-center mb-4">
+                        <div class="flex justify-between items-center mt-4">
                             <div>
                                 <p class="text-sm text-gray-500 line-through">STANDARD<br>£<?= number_format($pkg['old_price'], 2) ?>/mo</p>
                             </div>
@@ -63,7 +67,7 @@
                         </div>
 
                         <!-- Features -->
-                        <div class="flex flex-wrap gap-2 mb-4">
+                        <div class="flex flex-wrap gap-2 mt-4">
                             <?php if (!empty($features)): ?>
                                 <?php foreach ($features as $f): ?>
                                     <span class="bg-gray-100 text-gray-700 text-xs font-semibold px-2 py-1 rounded-full"><?= htmlspecialchars($f) ?></span>
@@ -74,7 +78,7 @@
                         </div>
 
                         <!-- Upfront Cost and View -->
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center mt-4">
                             <p class="text-sm text-gray-500">Upfront cost £<?= number_format($pkg['UpfrontCost'], 2) ?></p>
                             <a href="package-details.php?id=<?= (int)$pkg['PackageID'] ?>" class="bg-purple-600 text-white px-4 py-2 rounded-lg flex items-center">
                                 View Deal

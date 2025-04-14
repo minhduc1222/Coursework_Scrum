@@ -1,6 +1,6 @@
 <?php
 // Include database configuration
-include './includes/database.php';
+include './Include/database.php';
 
 // Include model files
 include './models/Package.php';
@@ -31,11 +31,11 @@ while ($row = $package_stmt->fetch(PDO::FETCH_ASSOC)) {
     $pkg = $row;
 
     // Fetch features based on Type
-    if ($pkg['Type'] === 'MobileOnly') {
+    if ($pkg['Type'] === 'Mobile') {
         $pkg['Features'] = $mobileFeature->getFeaturesByPackageId($pkg['PackageID']);
-    } elseif ($pkg['Type'] === 'BroadbandOnly') {
+    } elseif ($pkg['Type'] === 'Broadband') {
         $pkg['Features'] = $broadbandFeature->getFeaturesByPackageId($pkg['PackageID']);
-    } elseif ($pkg['Type'] === 'TabletOnly') {
+    } elseif ($pkg['Type'] === 'Tablet') {
         $pkg['Features'] = $tabletFeature->getFeaturesByPackageId($pkg['PackageID']); // corrected
     } else {
         $pkg['Features'] = [];

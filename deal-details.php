@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include './includes/database.php';
+include './Include/database.php';
 include './models/Deal.php';
 include './models/Package.php';
 

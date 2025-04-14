@@ -1,6 +1,6 @@
 <?php
 // Include database configuration
-include './includes/database.php';
+include './Include/database.php';
 
 // Include model files
 include './models/Package.php';
@@ -8,7 +8,7 @@ include './models/BroadbandFeature.php';
 
 // Get broadband packages
 $package = new Package($pdo);
-$broadbandPackages = $package->readByType('BroadbandOnly');
+$broadbandPackages = $package->readByType('Broadband');
 
 // Get features by package ID
 $BroadbandFeature = new BroadbandFeature($pdo);

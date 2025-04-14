@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include './includes/database.php';
+include './Include/database.php';
 include './models/Package.php';
 include './models/Order.php';
 include './models/Deal.php';
@@ -67,7 +67,8 @@ if ($is_deal_checkout) {
             'Description' => $packageModel->Description,
             'FreeMinutes' => $packageModel->FreeMinutes,
             'FreeSMS' => $packageModel->FreeSMS,
-            'FreeGB' => $packageModel->FreeGB
+            'FreeGB' => $packageModel->FreeGB,
+            'img' => $packageModel->img
         ];
     }
 }

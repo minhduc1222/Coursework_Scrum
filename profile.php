@@ -10,7 +10,7 @@ if (!isset($_SESSION['customer_id'])) {
 }
 
 // Include database configuration
-include './includes/database.php';
+include './Include/database.php';
 
 // Include Customer model
 include './models/Customer.php';

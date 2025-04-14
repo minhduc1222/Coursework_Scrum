@@ -5,10 +5,10 @@
 $headerGradient = 'gradient-purple'; // Default for Mobile
 $headerTitle = 'Mobile Package'; // Default title
 
-if ($package->Type === 'BroadbandOnly') {
+if ($package->Type === 'Broadband') {
     $headerGradient = 'gradient-blue'; // Blue gradient for Broadband
     $headerTitle = 'Broadband Package';
-} elseif ($package->Type === 'TabletOnly') {
+} elseif ($package->Type === 'Tablet') {
     $headerGradient = 'gradient-green'; // Green gradient for Tablet
     $headerTitle = 'Tablet Package';
 }
@@ -28,9 +28,14 @@ if ($package->Type === 'BroadbandOnly') {
 
     <!-- Package Details -->
     <div class="bg-white p-4 rounded-b-lg shadow-md">
+        <!-- Full-Width Image -->
+        <?php if (!empty($package->img)): ?>
+            <img src="<?= htmlspecialchars($package->img) ?>" alt="<?= htmlspecialchars($package->PackageName) ?>" class="w-full h-48 object-cover rounded-t-lg">
+        <?php endif; ?>
+
         <!-- Package Name and Description -->
-        <h2 class="text-lg font-semibold text-gray-800"><?= htmlspecialchars($package->PackageName) ?></h2>
-        <p class="text-sm text-gray-500 mt-1"><?= htmlspecialchars($package->Description) ?></p>
+        <h2 class="text-lg font-semibold text-gray-800 mt-2"><?= htmlspecialchars($package->PackageName) ?></h2>
+        <p class="text-sm text-gray-500 mt-1"><?= htmlspecialchars($package->Description) ?: 'No description available.' ?></p>
 
         <!-- Pricing -->
         <div class="flex justify-between items-center mt-4">
@@ -44,7 +49,7 @@ if ($package->Type === 'BroadbandOnly') {
         </div>
 
         <!-- Core Features (Data, Minutes, Texts for Mobile; Speed for Broadband; Brand for Tablet) -->
-        <?php if ($package->Type === 'MobileOnly'): ?>
+        <?php if ($package->Type === 'Mobile'): ?>
             <div class="mt-4">
                 <h3 class="text-sm font-semibold text-gray-700">Package Includes</h3>
                 <div class="grid grid-cols-3 gap-2 mt-2">
@@ -62,7 +67,7 @@ if ($package->Type === 'BroadbandOnly') {
                     </div>
                 </div>
             </div>
-        <?php elseif ($package->Type === 'BroadbandOnly'): ?>
+        <?php elseif ($package->Type === 'Broadband'): ?>
             <div class="mt-4">
                 <h3 class="text-sm font-semibold text-gray-700">Package Includes</h3>
                 <div class="grid grid-cols-3 gap-2 mt-2">
@@ -80,7 +85,7 @@ if ($package->Type === 'BroadbandOnly') {
                     </div>
                 </div>
             </div>
-        <?php elseif ($package->Type === 'TabletOnly'): ?>
+        <?php elseif ($package->Type === 'Tablet'): ?>
             <div class="mt-4">
                 <h3 class="text-sm font-semibold text-gray-700">Package Includes</h3>
                 <div class="grid grid-cols-2 gap-2 mt-2">
