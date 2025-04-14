@@ -109,5 +109,12 @@ class SpecialOffer {
         }
         return false;
     }
+
+    public function calculateTotal($baseTotal, $dealDiscountPercentage, $specialOfferDiscountPercentage) {
+        $dealDiscountedTotal = $baseTotal * (1 - $dealDiscountPercentage / 100);
+        $finalTotal = $dealDiscountedTotal * (1 - $specialOfferDiscountPercentage / 100);
+        $this->TotalAmount = $finalTotal; // Assume the model stores the total
+        return $finalTotal; // Return for use in logic
+    }
 }
 ?>

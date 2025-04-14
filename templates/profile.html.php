@@ -24,7 +24,7 @@ $edit_mode = isset($_GET['edit']) && $_GET['edit'] === 'true';
         <div class="bg-white p-6 rounded-lg shadow">
             <div class="flex flex-col items-center mb-4">
                 <img src="<?php echo htmlspecialchars($customer->avt_img ?: '../image/default-avatar.png'); ?>" alt="Profile Picture" class="w-24 h-24 rounded-full mb-2">
-                <p class="text-gray-600 font-semibold">BALANCE: 10000 £</p>
+                <p class="text-gray-600 font-semibold">Balance: <?php echo $customer->Balance?></p>
             </div>
             <div class="space-y-4">
                 <div>

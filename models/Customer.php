@@ -13,13 +13,14 @@ class Customer {
     public $CreditCardInfo;
     public $RegistrationDate;
     public $avt_img;
-    public $csv; // New column
+    public $csv;
+    public $Balance;              // ✅ New
+    public $PaymentMethod;        // ✅ New
 
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    // Read all customers
     public function readAll() {
         $query = "SELECT * FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
@@ -27,14 +28,13 @@ class Customer {
         return $stmt;
     }
 
-    // Read one customer
     public function readOne() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE CustomerID = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->CustomerID);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         $this->Name = $row['Name'];
         $this->Email = $row['Email'];
         $this->Password = $row['Password'];
@@ -43,18 +43,19 @@ class Customer {
         $this->CreditCardInfo = $row['CreditCardInfo'];
         $this->RegistrationDate = $row['RegistrationDate'];
         $this->avt_img = $row['avt_img'];
-        $this->csv = $row['csv']; // Added new column
+        $this->csv = $row['csv'];
+        $this->Balance = $row['Balance'];                  // ✅
+        $this->PaymentMethod = $row['PaymentMethod'];      // ✅
     }
 
-    // Create customer
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
                   SET Name=:Name, Email=:email, Password=:Password, Address=:address, 
-                      PhoneNumber=:phone, CreditCardInfo=:card, avt_img=:avt_img, csv=:csv";
-        
+                      PhoneNumber=:phone, CreditCardInfo=:card, avt_img=:avt_img, 
+                      csv=:csv, Balance=:balance, PaymentMethod=:payment_method";
+
         $stmt = $this->conn->prepare($query);
-        
-        // Sanitize and bind values
+
         $this->Name = htmlspecialchars(strip_tags($this->Name));
         $this->Email = htmlspecialchars(strip_tags($this->Email));
         $this->Password = htmlspecialchars(strip_tags($this->Password));
@@ -63,7 +64,9 @@ class Customer {
         $this->CreditCardInfo = htmlspecialchars(strip_tags($this->CreditCardInfo));
         $this->avt_img = htmlspecialchars(strip_tags($this->avt_img));
         $this->csv = htmlspecialchars(strip_tags($this->csv));
-        
+        $this->Balance = htmlspecialchars(strip_tags($this->Balance)); // or just floatval
+        $this->PaymentMethod = htmlspecialchars(strip_tags($this->PaymentMethod));
+
         $stmt->bindParam(":Name", $this->Name);
         $stmt->bindParam(":email", $this->Email);
         $hashedPassword = password_hash($this->Password, PASSWORD_DEFAULT);
@@ -73,32 +76,32 @@ class Customer {
         $stmt->bindParam(":card", $this->CreditCardInfo);
         $stmt->bindParam(":avt_img", $this->avt_img);
         $stmt->bindParam(":csv", $this->csv);
-        
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
+        $stmt->bindParam(":balance", $this->Balance);
+        $stmt->bindParam(":payment_method", $this->PaymentMethod);
+
+        return $stmt->execute();
     }
 
-    // Update customer
     public function update() {
         $query = "UPDATE " . $this->table_name . "
-                SET Name=:Name, Email=:email, Address=:address, 
-                    PhoneNumber=:phone, CreditCardInfo=:card, avt_img=:avt_img, csv=:csv
-                WHERE CustomerID=:id";
-        
+                  SET Name=:Name, Email=:email, Address=:address, 
+                      PhoneNumber=:phone, CreditCardInfo=:card, 
+                      avt_img=:avt_img, csv=:csv, Balance=:balance, PaymentMethod=:payment_method 
+                  WHERE CustomerID=:id";
+
         $stmt = $this->conn->prepare($query);
-        
-        // Sanitize and bind values
+
         $this->Name = htmlspecialchars(strip_tags($this->Name));
         $this->Email = htmlspecialchars(strip_tags($this->Email));
         $this->Address = htmlspecialchars(strip_tags($this->Address));
         $this->PhoneNumber = htmlspecialchars(strip_tags($this->PhoneNumber));
         $this->CreditCardInfo = htmlspecialchars(strip_tags($this->CreditCardInfo));
-        $this->CustomerID = htmlspecialchars(strip_tags($this->CustomerID));
         $this->avt_img = htmlspecialchars(strip_tags($this->avt_img));
         $this->csv = htmlspecialchars(strip_tags($this->csv));
-        
+        $this->Balance = htmlspecialchars(strip_tags($this->Balance));
+        $this->PaymentMethod = htmlspecialchars(strip_tags($this->PaymentMethod));
+        $this->CustomerID = htmlspecialchars(strip_tags($this->CustomerID));
+
         $stmt->bindParam(":Name", $this->Name);
         $stmt->bindParam(":email", $this->Email);
         $stmt->bindParam(":address", $this->Address);
@@ -106,35 +109,29 @@ class Customer {
         $stmt->bindParam(":card", $this->CreditCardInfo);
         $stmt->bindParam(":avt_img", $this->avt_img);
         $stmt->bindParam(":csv", $this->csv);
+        $stmt->bindParam(":balance", $this->Balance);
+        $stmt->bindParam(":payment_method", $this->PaymentMethod);
         $stmt->bindParam(":id", $this->CustomerID);
-        
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
+
+        return $stmt->execute();
     }
 
-    // Delete customer
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE CustomerID = ?";
         $stmt = $this->conn->prepare($query);
         $this->CustomerID = htmlspecialchars(strip_tags($this->CustomerID));
         $stmt->bindParam(1, $this->CustomerID);
-        
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
+        return $stmt->execute();
     }
 
-    // Login customer
     public function login() {
-        $query = "SELECT CustomerID, Name, Password, avt_img, csv FROM " . $this->table_name . " WHERE Email = ?";
+        $query = "SELECT CustomerID, Name, Password, avt_img, csv, Balance, PaymentMethod 
+                  FROM " . $this->table_name . " WHERE Email = ?";
         $stmt = $this->conn->prepare($query);
         $this->Email = htmlspecialchars(strip_tags($this->Email));
         $stmt->bindParam(1, $this->Email);
         $stmt->execute();
-        
+
         if($stmt->rowCount() > 0) {
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if(password_verify($this->Password, $row['Password'])) {
@@ -144,16 +141,16 @@ class Customer {
         return false;
     }
 
-    // Check if email exists
     public function emailExists() {
         $query = "SELECT CustomerID FROM " . $this->table_name . " WHERE Email = :email";
         $stmt = $this->conn->prepare($query);
-        
+
         $this->Email = htmlspecialchars(strip_tags($this->Email));
         $stmt->bindParam(":email", $this->Email);
         $stmt->execute();
-        
+
         return $stmt->rowCount() > 0;
     }
 }
+
 ?>
