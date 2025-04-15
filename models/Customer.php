@@ -151,6 +151,20 @@ class Customer {
 
         return $stmt->rowCount() > 0;
     }
+
+    public function changePassword($newPassword) {
+        $query = "UPDATE " . $this->table_name . " SET Password = :password WHERE CustomerID = :id";
+        $stmt = $this->conn->prepare($query);
+
+        // Sanitize and hash the new password
+        $this->CustomerID = htmlspecialchars(strip_tags($this->CustomerID));
+        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        $stmt->bindParam(":password", $hashedPassword);
+        $stmt->bindParam(":id", $this->CustomerID);
+
+        return $stmt->execute();
+    }
 }
 
 ?>

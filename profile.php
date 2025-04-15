@@ -53,6 +53,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     }
 }
 
+// Handle password change
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
+    $newPassword = $_POST['new_password'];
+    $confirmPassword = $_POST['confirm_password'];
+
+    // Validate passwords
+    if (empty($newPassword) || empty($confirmPassword)) {
+        $error = "Please fill in both password fields.";
+    } elseif ($newPassword !== $confirmPassword) {
+        $error = "Passwords do not match.";
+    } elseif (strlen($newPassword) < 8) {
+        $error = "Password must be at least 8 characters long.";
+    } else {
+        // Attempt to change password
+        if ($customer->changePassword($newPassword)) {
+            $success = "Password changed successfully!";
+        } else {
+            $error = "Failed to change password.";
+        }
+    }
+}
+
 // Start output buffering and include the template
 ob_start();
 include './templates/profile.html.php';
@@ -60,3 +82,4 @@ $page_content = ob_get_clean();
 
 // Render it inside the layout
 include './layout-mobile.html.php';
+?>
