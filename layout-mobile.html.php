@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- a -->
     <meta charset="UTF-8">
     <title>CheapDeals</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
